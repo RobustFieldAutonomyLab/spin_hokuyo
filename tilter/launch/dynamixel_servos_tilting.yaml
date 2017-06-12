@@ -1,0 +1,16 @@
+##.yaml for tilting launch, see motors_base for full details on this file
+
+tilt_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: tilt_joint
+    joint_speed: 0.5
+    motor:
+        id: 1
+        init: 2549
+        min: 0
+        max: 28672
+
+
