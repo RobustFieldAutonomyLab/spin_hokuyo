@@ -29,7 +29,8 @@ int main(int argc, char **argv) {
     ros::Subscriber position_sub = nh.subscribe("/tilt_controller/state", 5, &obtainValues);
   
     while(ros::ok()) {
-        transform();
         ros::spinOnce();
+        transform();
+        ros::Duration(0.01).sleep();
     }
 }

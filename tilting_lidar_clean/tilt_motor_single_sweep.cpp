@@ -45,7 +45,8 @@ void Dynamixel::moveMotor(double position) {
 void Dynamixel::checkError() {
     ros::spinOnce();
     while((abs (error))>0.05) {
-    ros::spinOnce();
+     ros::Duration(.1).sleep();
+     ros::spinOnce();
     }
 }
 
