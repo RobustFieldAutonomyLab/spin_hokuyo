@@ -1,5 +1,3 @@
-<!-- Combines the motors_base launch with the details of the tilter package.  Also launches rviz and a node to run the Hokuyo laser.  See motors_base for additional comments. -->
-
 <launch>
 
    <node

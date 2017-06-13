@@ -69,4 +69,18 @@
     name="scan_to_pcl"
    />
 
+    <node type="point_cloud2_assembler" pkg="laser_assembler"
+        name="my_assembler">
+    <remap from="cloud" to="hokuyo_points"/>
+    <param name="max_clouds" type="int" value="400" />
+    <param name="fixed_frame" type="string" value="camera" />
+  </node>
+
+
+   <node
+     pkg="tilting_lidar_clean"
+     type="combine_clouds"
+     name="combine_clouds"
+     output="screen"
+    />
 </launch>

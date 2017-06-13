@@ -2,6 +2,7 @@
 #include<std_msgs/Float64.h>
 #include<dynamixel_msgs/JointState.h>
 #include <cmath>
+ #include <laser_assembler/AssembleScans.h>
 
 /*This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.*/
 
@@ -43,11 +44,11 @@ void Dynamixel::moveMotor(double position) {
 void Dynamixel::checkError() {
     ros::spinOnce();
     while((abs (error))>0.05) {
-//    ros::Duration(.07).sleep();
-//  ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
     ros::spinOnce();
     }
 }
+
+using namespace laser_assembler;
 
 int main(int argc, char **argv) {
 
@@ -90,4 +91,5 @@ int main(int argc, char **argv) {
         motor.checkError();
         ros::Duration(pause).sleep();
     }
+
 }

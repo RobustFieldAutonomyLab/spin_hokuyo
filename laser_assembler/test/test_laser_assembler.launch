@@ -1,0 +1,15 @@
+<launch>
+
+  <node pkg="laser_assembler" type="dummy_scan_producer" output="screen" name="dummy_scan_producer" />
+
+  <node pkg="laser_assembler" type="laser_scan_assembler" output="screen"  name="laser_scan_assembler">
+    <remap from="scan" to="dummy_scan"/>
+    <param name="tf_cache_time_secs" type="double" value="10.0" />
+    <param name="max_scans" type="int" value="400" />
+    <param name="ignore_laser_skew" type="bool" value="true" />
+    <param name="fixed_frame" type="string" value="dummy_base_link" />
+  </node>
+
+  <test test-name="test_laser_assembler" pkg="laser_assembler" type="test_assembler" />
+
+</launch>

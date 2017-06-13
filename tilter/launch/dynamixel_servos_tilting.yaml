@@ -1,5 +1,3 @@
-##.yaml for tilting launch, see motors_base for full details on this file
-
 tilt_controller:
     controller:
         package: dynamixel_controllers

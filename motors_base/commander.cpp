@@ -8,7 +8,6 @@ using namespace std;
 
 /*  This program takes in numbers from the /commands topic and prepares them before publishing to the servo.  The number on the /commands topic corresponds to a location on the servo's rotation in degrees.  Each position is fixed (i.e. There is a 0 deg. position and a 180 deg. position.  Sending a command of 180 will not necessarily make the motor turn 180 deg.).  The program then converts the degree value into radians and publishes the value to the servo.  The program also allows for enough time to pass prior to the next command to allow the servo to move */
 
-//global variables
 float error = 1;
 int go = 0;
 float place;
@@ -16,10 +15,11 @@ float place;
 //obtains error from message
 void obtainValues(const dynamixel_msgs::JointState &msg)
 {
+  //ROS_ERROR_STREAM("hi");
   error = msg.error;
 }  
 
-//creates all commands for the motor
+//creates all commands for each motor
 class Dynamixel
 {
   private:
@@ -44,20 +44,24 @@ Dynamixel::Dynamixel()
   std_msgs::Float64 aux;
   aux.data = convert;
   pub_n.publish(aux);
+  //ROS_INFO_STREAM(aux);
 }
 
 //ensures proper alignment
 void Dynamixel::checkError()
 {
   ros::spinOnce();
+  ROS_ERROR_STREAM(error);
   while(abs(error)>0.02)
   {
     ROS_INFO_STREAM("hi");
     ros::Duration(0.5).sleep();
+    ROS_WARN_STREAM(error);
     ros::spinOnce();
 
   }
 }
+
 
 //obtains requested position
 void transfer(const std_msgs::Float64 &msg)
@@ -76,20 +80,22 @@ int main (int argc, char **argv)
   //creates 1 Dynamixel named motor
   Dynamixel motor;
 
-  //subscribers
-  ros::Subscriber sub_2=nh.subscribe("/commands", 1, &transfer); //external requests
-  ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
+  //subscribes to external requests
+  ros::Subscriber sub_2=nh.subscribe("/commands", 1, &transfer);  //external
+
+ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
 
 //weird ross::ok() and spinOnce() loop needed to make it work
 while(ros::ok())
  {
-  //check if new request has been received
+  //if new request has been received
   if(go==1)
   {
     //move motor to request
     motor.moveMotor(place);
-    ros::Duration(0.5).sleep(); //wait for error to be updated
+    ros::Duration(0.5).sleep();
     motor.checkError();
+    ROS_INFO_STREAM("**");
     ros::Duration(0.5).sleep(); //saftety break
     go = 0;
   }

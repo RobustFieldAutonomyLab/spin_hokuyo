@@ -1,5 +1,3 @@
-<!-- This launch file does a basic motor launch.  The manager and spawner identify and create the topics for each motor that is connected.  The spawner terminates when it's job is finished, the manager will run until the program is closed.  The commander node creates a new topic - /commands - that allows new motor positions to be input by degrees and then properly publishes them to the motor.  Please see commander.cpp for additional information. -->
-
 <launch>
 
    <node
@@ -8,7 +6,6 @@
      type="controller_manager.py"
      output="screen">
  
-<!-- These parameters allow the manager to find the motor.  If issues arise, use the Dynamixel Wizard through the Robotis Windows program to check the motor's ID number, baud rate, and update rate.  Either change them on Windows to match these parameters, or adjust the parameters to match the motor.  Max Motor ID can be adjusted to  greater if multiple servos are used. -->
      <rosparam>
        namespace: dxl_manager
        serial_ports:
@@ -22,9 +19,8 @@
 
    </node>
 
-<!-- This launch file establishes the name of the servo and a few other general facts so the spawner can set up the topics.  Please see the file for additional information. -->
    <rosparam
-      file="$(find motors_base)/launch/dynamixel_servos_basic.yaml"
+      file="$(find motors_base)/launch/dynamixel_servos.yaml"
       command="load"
     />
 
