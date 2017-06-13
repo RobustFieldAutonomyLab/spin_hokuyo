@@ -1,9 +1,10 @@
 #include<ros/ros.h>
 #include<std_msgs/Float64.h>
 #include<dynamixel_msgs/JointState.h>
-#include <cmath>
- #include <laser_assembler/AssembleScans.h>
-
+#include<cmath>
+#include<laser_assembler/AssembleScans.h>
+#include<ros/time.h>
+#include<std_msgs/Time.h>
 /*This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.*/
 
 using namespace std;
@@ -48,6 +49,53 @@ void Dynamixel::checkError() {
     }
 }
 
+class startTime
+{
+  private:
+  ros::NodeHandle nh;
+  ros::Publisher pub;
+  
+  public:
+  startTime();
+  void send();
+};
+
+startTime::startTime()
+{
+  pub=nh.advertise<std_msgs::Time>("/time/start_time", 1);
+}
+
+void startTime::send()
+{
+  std_msgs::Time msg;
+  msg.data = ros::Time::now();
+  pub.publish(msg);
+}
+
+class endTime
+{
+  private:
+  ros::NodeHandle nh;
+  ros::Publisher pub;
+
+  public:
+  endTime();
+  void send();
+};
+
+endTime::endTime()
+{
+  pub=nh.advertise<std_msgs::Time>("/time/end_time", 1);
+}
+
+void endTime::send()
+{
+  std_msgs::Time msg;
+  msg.data = ros::Time::now();
+  pub.publish(msg);
+}
+
+
 using namespace laser_assembler;
 
 int main(int argc, char **argv) {
@@ -56,6 +104,8 @@ int main(int argc, char **argv) {
     ros::NodeHandle nh;
 
     Dynamixel motor;
+    startTime start;
+    endTime end;
 
     //variables
     int max;
@@ -73,22 +123,24 @@ int main(int argc, char **argv) {
     //Wait for servo init
     ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));
 
-//    motor.moveMotor(0);
-//    ros::Duration(pause).sleep();
-//    motor.checkError();
-//   ros::Duration(pause).sleep();
+    motor.moveMotor(min);
+    ros::Duration(pause).sleep();
+    motor.checkError();
+    ros::Duration(pause).sleep();
 
 
     while(ros::ok()) {
 
+        start.send();
         motor.moveMotor(max);
 	ros::Duration(pause).sleep();
         motor.checkError();
         ros::Duration(pause).sleep();
-    
+
         motor.moveMotor(min);
 	ros::Duration(pause).sleep();
         motor.checkError();
+        end.send();
         ros::Duration(pause).sleep();
     }
 

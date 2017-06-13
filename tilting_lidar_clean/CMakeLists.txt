@@ -105,7 +105,7 @@ catkin_package(
 #  DEPENDS system_lib
 )
 include_directories(include ${catkin_INCLUDE_DIRS})
-add_executable(tilt_motor tilt_motor.cpp)
+add_executable(tilt_motor tilt_motor_single_sweep.cpp)
 add_executable(tilt_transform tilt_transform.cpp)
 target_link_libraries(tilt_motor ${catkin_LIBRARIES})
 target_link_libraries(tilt_transform ${catkin_LIBRARIES})
