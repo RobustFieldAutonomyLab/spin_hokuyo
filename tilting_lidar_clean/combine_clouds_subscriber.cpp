@@ -123,8 +123,8 @@ int main(int argc, char **argv)
   
   ROS_INFO_STREAM("Found build_cloud! Starting the snapshotter");
   
-  ros::Subscriber sub_1=n.subscribe("/start_time", 1, &startTime);
-  ros::Subscriber sub_2=n.subscribe("/end_time", 1, &endTime);
+  ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
+  ros::Subscriber sub_2=n.subscribe("/time/end_time", 1, &endTime);
 
   PeriodicSnapshotter snapshotter;
 
