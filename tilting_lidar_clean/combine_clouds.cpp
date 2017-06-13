@@ -115,7 +115,11 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "periodic_snapshotter");
   ros::NodeHandle n;
   ROS_INFO("Waiting for [build_cloud] to be advertised");
+  
+  //Wait for build cloud service to init
   ros::service::waitForService("build_cloud");
+  
+  //Wait for dynamixel servo to init
   ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));
   ROS_INFO("Found build_cloud! Starting the snapshotter");
   PeriodicSnapshotter snapshotter;
