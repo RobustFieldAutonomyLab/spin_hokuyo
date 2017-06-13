@@ -7,11 +7,9 @@
 using namespace std;
 float pos;
 
+//Recieves position values from dynamixel servo and uses angle to apply transform to laser scan
 void obtainValues(const dynamixel_msgs::JointState &msg) {
     pos = msg.current_pos;
-}
-
-void transform() {
     static tf::TransformBroadcaster br;
     tf::Transform transform;
     transform.setOrigin( tf::Vector3(0.0, 0.0, 0.0) );
@@ -21,16 +19,11 @@ void transform() {
     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "camera", "laser"));
 }
 
-
 int main(int argc, char **argv) {
     ros::init(argc, argv, "tilt_transform");
     ros::NodeHandle nh;
   
     ros::Subscriber position_sub = nh.subscribe("/tilt_controller/state", 5, &obtainValues);
-  
-    while(ros::ok()) {
-        ros::spinOnce();
-        transform();
-        ros::Duration(0.01).sleep();
-    }
+
+    ros::spin();
 }
