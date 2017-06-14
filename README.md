@@ -27,7 +27,7 @@ Is the Dynamixel connected to a 12V power source via the adapter?
 Is the switch on the USB adapter at the proper loaction?  
 
 # Source Repos
-##Dynamixel Controllers
+## Dynamixel Controllers
 dynamixel_controllers is a package contained within the dynamixel_motor package, which is hosted at:  
 https://github.com/arebgun/dynamixel_motor  
 ##
