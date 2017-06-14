@@ -7,7 +7,9 @@
 #include<std_msgs/Time.h>
 #include<std_msgs/Empty.h>
 
-/*This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.*/
+/*This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.
+  This iteration has the servo initilize and then move back and forth continuously.
+  It also sends times to the combine_clouds_subscriber to allow individual point clouds to be compiled.*/
 
 using namespace std;
 
@@ -119,8 +121,10 @@ void sweep()
     ROS_INFO("Finished One Sweep!");
 }
 
+//main
 int main(int argc, char **argv)
 {
+    //initialize
     ros::init(argc, argv, "Motor_Tilt");
     ros::NodeHandle nh;
 
@@ -130,6 +134,7 @@ int main(int argc, char **argv)
     double pause;
     Dynamixel motor;
 
+    //establish parameters
     nh.param("maximum", max, 92);
     nh.param("minimum", min, -92);
     nh.param("pause", pause, 0.1);
@@ -142,11 +147,12 @@ int main(int argc, char **argv)
     //Wait for servo init
     ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(100));
 
-    //pause to allow motor object to initializei and set to min_angle
+    //pause to allow motor object to initialize and set to min_angle
     ros::Duration(1).sleep();
     initialize();
     ROS_INFO_STREAM("ready");  
 
+    //continuously perform sweeps
     while(ros::ok())
     {
       sweep();
