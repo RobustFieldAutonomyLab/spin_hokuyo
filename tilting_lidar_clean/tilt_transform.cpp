@@ -9,8 +9,7 @@ using namespace std;
 float pos;
 
 //Recieves position values from dynamixel servo and uses angle to apply transform to laser scan
-void obtainValues(const dynamixel_msgs::JointState &msg)
-{
+void obtainValues(const dynamixel_msgs::JointState &msg) {
     //gets position from message
     pos = msg.current_pos;
     
@@ -25,8 +24,7 @@ void obtainValues(const dynamixel_msgs::JointState &msg)
 }
 
 //main
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     //initialize
     ros::init(argc, argv, "tilt_transform");
     ros::NodeHandle nh;

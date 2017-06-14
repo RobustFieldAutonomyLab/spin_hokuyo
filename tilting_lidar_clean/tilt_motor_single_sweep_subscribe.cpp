@@ -20,14 +20,12 @@ int min_angle;
 float pause_time;
 
 //obtains error from message
-void obtainValues(const dynamixel_msgs::JointState &msg) 
-{
+void obtainValues(const dynamixel_msgs::JointState &msg) {
     error = msg.error;
 }
 
 //creates all commands for the motor
-class Dynamixel
-{
+class Dynamixel {
     private:
     ros::NodeHandle nh;
     ros::Publisher pub_1;
@@ -44,8 +42,7 @@ class Dynamixel
 };
 
 //creates publishers and subscriber
-Dynamixel::Dynamixel()
-{
+Dynamixel::Dynamixel() {
     pub_1 = nh.advertise<std_msgs::Float64>("/tilt_controller/command", 10);
     pub_2 = nh.advertise<std_msgs::Time>("/time/start_time", 1);
     pub_3 = nh.advertise<std_msgs::Time>("/time/end_time", 1);
@@ -62,38 +59,33 @@ void Dynamixel::moveMotor(double position) {
 }
 
 //ensures proper alignment
-void Dynamixel::checkError()
-{
+void Dynamixel::checkError() {
     ROS_WARN_STREAM("hi");
     ros::spinOnce();
-    while((abs (error))>0.05) 
-    {
-     ROS_ERROR_STREAM("bye");
-     ros::Duration(.1).sleep();
-     ros::spinOnce();
-    }
+    while((abs (error))>0.05) {
+        ROS_ERROR_STREAM("bye");
+        ros::Duration(.1).sleep();
+        ros::spinOnce();
+    }    
     ROS_WARN_STREAM("boo");
 }
 
 //publishes start time for cloud compiler
-void Dynamixel::startTime()
-{
-  std_msgs::Time msg;
-  msg.data = ros::Time::now();
-  pub_2.publish(msg);
+void Dynamixel::startTime() {
+    std_msgs::Time msg;
+    msg.data = ros::Time::now();
+    pub_2.publish(msg);
 }
 
 //publishes end time for cloud compiler
-void Dynamixel::endTime()
-{
-  std_msgs::Time msg;
-  msg.data = ros::Time::now();
-  pub_3.publish(msg);
+void Dynamixel::endTime() {
+    std_msgs::Time msg;
+    msg.data = ros::Time::now();
+    pub_3.publish(msg);
 }
 
 //initilazies motor to min angle
-void initialize()
-{
+void initialize() {
     Dynamixel motor_1;
 
     motor_1.moveMotor(min_angle);
@@ -103,8 +95,7 @@ void initialize()
 }
 
 //performs one sweep min -> max -> min
-void sweep(const std_msgs::Empty &msg)
-{
+void sweep(const std_msgs::Empty &msg) {
     Dynamixel motor;
 
     motor.startTime();
@@ -122,8 +113,7 @@ void sweep(const std_msgs::Empty &msg)
 }
 
 //main
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     //initialize
     ros::init(argc, argv, "Motor_Tilt");
     ros::NodeHandle nh;

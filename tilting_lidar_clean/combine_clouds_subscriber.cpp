@@ -56,100 +56,90 @@ ros::Time end;
 int go = 0;
 
 //call back for start time, saves in global variable
-void startTime(const std_msgs::Time &msg)
-{
-  start = msg.data;
+void startTime(const std_msgs::Time &msg) {
+    start = msg.data;
 }
 
 //callback for end time, saves in global variable and updates go to start compilation
-void endTime(const std_msgs::Time &msg)
-{
-  end = msg.data;
-  go = 1;
+void endTime(const std_msgs::Time &msg) {
+    end = msg.data;
+    go = 1;
 }
 
 //compilation class created by combine_clouds with modifications to remove timer and work with our times
-class PeriodicSnapshotter
-{
+class PeriodicSnapshotter {
 
-public:
+    public:
 
-  PeriodicSnapshotter()
-  {
-    // Create a publisher for the clouds that we assemble
-    pub_ = n_.advertise<sensor_msgs::PointCloud2> ("assembled_cloud", 1);
+    PeriodicSnapshotter() {
+        // Create a publisher for the clouds that we assemble
+        pub_ = n_.advertise<sensor_msgs::PointCloud2> ("assembled_cloud", 1);
 
-    // Create the service client for calling the assembler
-    client_ = n_.serviceClient<AssembleScans2>("assemble_scans2");
+        // Create the service client for calling the assembler
+        client_ = n_.serviceClient<AssembleScans2>("assemble_scans2");
 
-  }
-
-  void compile()
-  {
-    // Populate our service request based on our timer callback times
-    AssembleScans2 srv;
-    srv.request.begin = start;
-    srv.request.end   = end;
-
-    // Make the service call
-    if (client_.call(srv))
-    {
-      ROS_INFO_STREAM("Published Cloud") ;
-      pub_.publish(srv.response.cloud);
     }
-    else
-    {
-      ROS_ERROR("Error making service call\n") ;
-    }
-  }
 
-private:
-  ros::NodeHandle n_;
-  ros::Publisher pub_;
-  ros::ServiceClient client_;
+    void compile() {
+        // Populate our service request based on our timer callback times
+        AssembleScans2 srv;
+        srv.request.begin = start;
+        srv.request.end   = end;
+
+        // Make the service call
+        if (client_.call(srv)) {
+            ROS_INFO_STREAM("Published Cloud") ;
+            pub_.publish(srv.response.cloud);
+        }
+        else {
+            ROS_ERROR("Error making service call\n") ;
+        } 
+    }
+
+    private:
+    ros::NodeHandle n_;
+    ros::Publisher pub_;
+    ros::ServiceClient client_;
 } ;
 
 
-int main(int argc, char **argv)
-{
-  //initialize and wait for necessary services, etc.
-  ros::init(argc, argv, "periodic_snapshotter");
-  ros::NodeHandle n;
-  ROS_INFO("Waiting for [build_cloud] to be advertised");
+int main(int argc, char **argv) {
+    //initialize and wait for necessary services, etc.
+    ros::init(argc, argv, "periodic_snapshotter");
+    ros::NodeHandle n;
+    ROS_INFO("Waiting for [build_cloud] to be advertised");
   
-  //Wait for build cloud service to init
-  ros::service::waitForService("build_cloud");
+    //Wait for build cloud service to init
+    ros::service::waitForService("build_cloud");
   
-  //Wait for dynamixel servo to init
-  ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));
+    //Wait for dynamixel servo to init
+    ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));
   
-  ROS_INFO_STREAM("Found build_cloud! Starting the snapshotter");
+    ROS_INFO_STREAM("Found build_cloud! Starting the snapshotter");
   
-  //subscribes to start and end time published by tilting motor
-  ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
-  ros::Subscriber sub_2=n.subscribe("/time/end_time", 1, &endTime);
+    //subscribes to start and end time published by tilting motor
+    ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
+    ros::Subscriber sub_2=n.subscribe("/time/end_time", 1, &endTime);
 
-  PeriodicSnapshotter snapshotter;
+    PeriodicSnapshotter snapshotter;
 
-  while(ros::ok())
-  {
-    //when an end time comes in (which only occurs after start time is updated) run the compiler
-    if(go==1)
-    {
-      snapshotter.compile();
-      go = 0;
+    while(ros::ok()) {
+        //when an end time comes in (which only occurs after start time is updated) run the compiler
+        if(go==1) {
+            snapshotter.compile();
+            go = 0;
+        }
+
+        //wait for messages when not compiling
+        else{
+            ros::spinOnce();
+        }
+  
+    //pause to save computing power
+    ros::Duration(0.01).sleep();
     }
-
-    //wait for messages when not compiling
-    else
-    {
-      ros::spinOnce();
-    }
-  
-  //pause to save computing power
-  ros::Duration(0.01).sleep();
-  }
   
 return 0;
+
 }
 
