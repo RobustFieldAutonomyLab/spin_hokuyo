@@ -6,6 +6,8 @@ This repository contains code to control a Dynamixel motor and a 2D Hokuyo LiDAR
 sudo apt-get install ros-indigo-dynamixel-motor<br />
 Install Hokuyo Node:<br />
 sudo apt-get install ros-indigo-hokuyo-node<br />
+Install Laser Assembler:<br />
+sudo apt-get install ros-indigo-laser-assembler<br />
 2. Download this repocitory into your src file.<br />
 3. In the motors_base/launch folder, update the dynamixel_servos.yaml to match your servo.<br />
 For information on how to fill out the .yaml file, please see dynamixel_servos_basic.yaml under motors_base/launch.<br />
