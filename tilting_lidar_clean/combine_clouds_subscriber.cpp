@@ -44,28 +44,31 @@
 #include"dynamixel_msgs/JointState.h"
 #include"std_msgs/Time.h"
 #include<ros/time.h>
-/***
- * This a simple test app that requests a point cloud from the
- * point_cloud_assembler every 4 seconds, and then publishes the
- * resulting data
- */
+
+/* This is a modified combine_clouds file that subscribes to times published while tilting the motor and sends those as necessary
+   to the compilation service to put all of the point clouds together*/
+
 using namespace laser_assembler;
 
+//global variables
 ros::Time start;
 ros::Time end;
 int go = 0;
 
+//call back for start time, saves in global variable
 void startTime(const std_msgs::Time &msg)
 {
   start = msg.data;
 }
 
+//callback for end time, saves in global variable and updates go to start compilation
 void endTime(const std_msgs::Time &msg)
 {
   end = msg.data;
   go = 1;
 }
 
+//compilation class created by combine_clouds with modifications to remove timer and work with our times
 class PeriodicSnapshotter
 {
 
@@ -83,8 +86,6 @@ public:
 
   void compile()
   {
-
-
     // Populate our service request based on our timer callback times
     AssembleScans2 srv;
     srv.request.begin = start;
@@ -111,6 +112,7 @@ private:
 
 int main(int argc, char **argv)
 {
+  //initialize and wait for necessary services, etc.
   ros::init(argc, argv, "periodic_snapshotter");
   ros::NodeHandle n;
   ROS_INFO("Waiting for [build_cloud] to be advertised");
@@ -123,6 +125,7 @@ int main(int argc, char **argv)
   
   ROS_INFO_STREAM("Found build_cloud! Starting the snapshotter");
   
+  //subscribes to start and end time published by tilting motor
   ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
   ros::Subscriber sub_2=n.subscribe("/time/end_time", 1, &endTime);
 
@@ -130,18 +133,23 @@ int main(int argc, char **argv)
 
   while(ros::ok())
   {
+    //when an end time comes in (which only occurs after start time is updated) run the compiler
     if(go==1)
     {
       snapshotter.compile();
       go = 0;
     }
 
+    //wait for messages when not compiling
     else
     {
       ros::spinOnce();
     }
+  
+  //pause to save computing power
   ros::Duration(0.01).sleep();
   }
+  
 return 0;
 }
 
