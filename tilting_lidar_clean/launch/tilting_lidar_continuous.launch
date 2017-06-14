@@ -1,0 +1,101 @@
+<launch>
+
+   <node
+     name="dynamixel_manager"
+     pkg="dynamixel_controllers"
+     type="controller_manager.py"
+     output="screen">
+ 
+     <rosparam>
+       namespace: dxl_manager
+       serial_ports:
+         pan_tilt_port:
+           port_name: "/dev/ttyUSB0"
+           baud_rate: 1000000
+           min_motor_id: 1
+           max_motor_id: 2
+           update_rate: 60
+     </rosparam>
+
+   </node>
+
+   <rosparam
+      file="$(find tilting_lidar_clean)/launch/dynamixel_servos_tilting.yaml"
+      command="load"
+    />
+
+  <node
+    name="dynamixel_controller_spawner"
+    pkg="dynamixel_controllers"
+    type="controller_spawner.py"
+    args="--manager=dxl_manager
+          --port=pan_tilt_port
+          --type=simple
+          tilt_controller"
+    output="screen"
+   />
+
+  <node
+    name="tilt_motor"    
+    pkg="tilting_lidar_clean"
+    type="tilt_motor"
+    output="screen"
+   />
+
+  <node
+    name="tilt_transform"
+    pkg="tilting_lidar_clean"
+    type="tilt_transform"
+    output="screen"
+  />
+
+ <node
+    pkg="hokuyo_node"
+    type="hokuyo_node"
+    name="hokuyo"
+    output="screen"
+  />
+
+  <node
+    pkg="rviz"
+    type="rviz"
+    name="rviz"
+    args="-d $(find tilting_lidar_clean)/rviz_cfg/tilting_lidar.rviz"/>
+   />
+
+  <node
+    pkg="scan_to_pcl"
+    type="scan_to_pcl"
+    name="scan_to_pcl"
+   />
+
+    <node type="point_cloud2_assembler" pkg="laser_assembler"
+        name="my_assembler">
+    <remap from="cloud" to="hokuyo_points"/>
+    <param name="max_clouds" type="int" value="400" />
+    <param name="fixed_frame" type="string" value="camera" />
+  </node>
+
+
+   <node
+     pkg="tilting_lidar_clean"
+     type="combine_clouds"
+     name="combine_clouds"
+     output="screen"
+    />
+
+<!-- This file is setup for tilting Hokuyo -->
+    <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+         <param name="resolution" value="0.1" />
+
+        <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+         <param name="frame_id" type="string" value="camera" />
+
+        <!-- maximum range to integrate (speedup!) -->
+         <param name="sensor_model/max_range" value="30.0" />
+        <!-- data source to integrate (PointCloud2) -->
+         <remap from="cloud_in" to="/assembled_cloud" />
+
+    </node>
+
+</launch>
