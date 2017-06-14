@@ -48,7 +48,6 @@ Dynamixel::Dynamixel()
     pub_2 = nh.advertise<std_msgs::Time>("/time/start_time", 1);
     pub_3 = nh.advertise<std_msgs::Time>("/time/end_time", 1);
     sub   = nh.subscribe("/tilt_controller/state", 1, &obtainValues); //checks error
-
 }
 
 //creates message and publishes -> degree to radian to publish
@@ -63,12 +62,15 @@ void Dynamixel::moveMotor(double position) {
 //ensures proper alignment
 void Dynamixel::checkError()
 {
+    ROS_WARN_STREAM("hi");
     ros::spinOnce();
     while((abs (error))>0.05) 
     {
+     ROS_ERROR_STREAM("bye");
      ros::Duration(.1).sleep();
      ros::spinOnce();
     }
+    ROS_WARN_STREAM("boo");
 }
 
 //publishes start time for cloud compiler
@@ -90,11 +92,11 @@ void Dynamixel::endTime()
 //initilazies motor to min angle
 void initialize()
 {
-    Dynamixel motor;
+    Dynamixel motor_1;
 
-    motor.moveMotor(min_angle);
+    motor_1.moveMotor(min_angle);
     ros::Duration(pause_time).sleep();
-    motor.checkError();
+    motor_1.checkError();
     ros::Duration(pause_time).sleep();
 }
 
@@ -108,13 +110,13 @@ void sweep(const std_msgs::Empty &msg)
     ros::Duration(pause_time).sleep();
     motor.checkError();
     ros::Duration(pause_time).sleep();
- 
+
     motor.moveMotor(min_angle);
     ros::Duration(pause_time).sleep();
     motor.checkError();
     motor.endTime();
     ros::Duration(pause_time).sleep();
-
+    ROS_INFO("Finished One Sweep!");
 }
 
 int main(int argc, char **argv)
@@ -126,11 +128,11 @@ int main(int argc, char **argv)
     int max;
     int min;
     double pause;
+    Dynamixel motor;
 
-    //intitialize parameters
     nh.param("maximum", max, 92);
     nh.param("minimum", min, -92);
-    nh.param("pause", pause, 0.03);
+    nh.param("pause", pause, 0.1);
 
     //transfer parameters to global variables
     max_angle = max;
@@ -138,14 +140,14 @@ int main(int argc, char **argv)
     pause_time = pause;
 
     //Wait for servo init
-    ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));
+    ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(100));
 
     //subscribe to empty message to run sweep
     ros::Subscriber sub=nh.subscribe("/perform_sweep", 1, &sweep);
+    
+    //pause to allow motor object to initialize
+    ros::Duration(1).sleep();
+    ROS_INFO_STREAM("ready");  
 
-    //set motor to min angle
-    initialize();
-
-    //wait for msgs to sweep
     ros::spin();
 }
