@@ -60,14 +60,11 @@ void Dynamixel::moveMotor(double position) {
 
 //ensures proper alignment
 void Dynamixel::checkError() {
-    ROS_WARN_STREAM("hi");
     ros::spinOnce();
     while((abs (error))>0.05) {
-        ROS_ERROR_STREAM("bye");
         ros::Duration(.1).sleep();
         ros::spinOnce();
     }    
-    ROS_WARN_STREAM("boo");
 }
 
 //publishes start time for cloud compiler
@@ -142,8 +139,7 @@ int main(int argc, char **argv) {
     
     //pause to allow motor object to initialize and set to min_angle
     ros::Duration(1).sleep();
-    initialize();
-    ROS_INFO_STREAM("ready");  
+    initialize(); 
     
     //wait for empty messages to perform sweep
     ros::spin();
