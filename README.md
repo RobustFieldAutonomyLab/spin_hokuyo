@@ -22,6 +22,12 @@ This should cause the motor to regularly sweep from 90 to -90 and generate a poi
 Be sure to update the dynamixel_servos_tilting.yaml for position, speed, etc.<br />
 
 # Possible Dynamixel Errors
-Is the USB properly inserted and setup for your computer?<br />
-Is the Dynamixel connected to a 12V power source via the adapter?<br />
-Is the switch on the USB adapter at the proper loaction?<br />
+Is the USB properly inserted and setup for your computer?  
+Is the Dynamixel connected to a 12V power source via the adapter?  
+Is the switch on the USB adapter at the proper loaction?  
+
+# Source Repos
+##Dynamixel Controllers
+dynamixel_controllers is a package contained within the dynamixel_motor package, which is hosted at:  
+https://github.com/arebgun/dynamixel_motor  
+##
