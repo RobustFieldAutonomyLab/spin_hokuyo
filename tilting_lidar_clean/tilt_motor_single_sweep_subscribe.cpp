@@ -7,7 +7,9 @@
 #include<std_msgs/Time.h>
 #include<std_msgs/Empty.h>
 
-/*This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.*/
+/*This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.
+  This iteration performs initializes the servo and then waits for messages through and empty message to perform sweeps.
+  This version also sends times to cloud_compiler_subscriber to assemble point clouds.*/
 
 using namespace std;
 
@@ -119,8 +121,10 @@ void sweep(const std_msgs::Empty &msg)
     ROS_INFO("Finished One Sweep!");
 }
 
+//main
 int main(int argc, char **argv)
 {
+    //initialize
     ros::init(argc, argv, "Motor_Tilt");
     ros::NodeHandle nh;
 
@@ -130,6 +134,7 @@ int main(int argc, char **argv)
     double pause;
     Dynamixel motor;
 
+    //get parameters
     nh.param("maximum", max, 92);
     nh.param("minimum", min, -92);
     nh.param("pause", pause, 0.1);
@@ -145,9 +150,11 @@ int main(int argc, char **argv)
     //subscribe to empty message to run sweep
     ros::Subscriber sub=nh.subscribe("/perform_sweep", 1, &sweep);
     
-    //pause to allow motor object to initializei and set to min_angle
+    //pause to allow motor object to initialize and set to min_angle
     ros::Duration(1).sleep();
     initialize();
     ROS_INFO_STREAM("ready");  
+    
+    //wait for empty messages to perform sweep
     ros::spin();
 }
