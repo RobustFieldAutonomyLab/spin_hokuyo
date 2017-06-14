@@ -145,9 +145,9 @@ int main(int argc, char **argv)
     //subscribe to empty message to run sweep
     ros::Subscriber sub=nh.subscribe("/perform_sweep", 1, &sweep);
     
-    //pause to allow motor object to initialize
+    //pause to allow motor object to initializei and set to min_angle
     ros::Duration(1).sleep();
+    initialize();
     ROS_INFO_STREAM("ready");  
-
     ros::spin();
 }
