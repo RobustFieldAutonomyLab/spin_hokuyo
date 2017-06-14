@@ -138,8 +138,7 @@ int main(int argc, char **argv) {
 
     //pause to allow motor object to initialize and set to min_angle
     ros::Duration(1).sleep();
-    initialize();
-    ROS_INFO_STREAM("ready");  
+    initialize();    
 
     //continuously perform sweeps
     while(ros::ok()) {
