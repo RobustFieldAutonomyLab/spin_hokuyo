@@ -73,7 +73,7 @@
         name="my_assembler">
     <remap from="cloud" to="hokuyo_points"/>
     <param name="max_clouds" type="int" value="400" />
-    <param name="fixed_frame" type="string" value="camera" />
+    <param name="fixed_frame" type="string" value="servo" />
   </node>
 
 

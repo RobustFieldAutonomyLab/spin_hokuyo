@@ -73,7 +73,7 @@
         name="my_assembler">
     <remap from="cloud" to="hokuyo_points"/>
     <param name="max_clouds" type="int" value="400" />
-    <param name="fixed_frame" type="string" value="camera" />
+    <param name="fixed_frame" type="string" value="servo" />
   </node>
 
 
@@ -89,7 +89,7 @@
       <param name="resolution" value="0.1" />
 
       <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
-      <param name="frame_id" type="string" value="camera" />
+      <param name="frame_id" type="string" value="servo" />
 
       <!-- maximum range to integrate (speedup!) -->
       <param name="sensor_model/max_range" value="30.0" />
