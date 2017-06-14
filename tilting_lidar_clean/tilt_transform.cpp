@@ -21,7 +21,7 @@ void obtainValues(const dynamixel_msgs::JointState &msg)
     tf::Quaternion q;
     q.setRPY(pos, 0, 0);
     transform.setRotation(q);
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "camera", "laser"));
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "servo", "laser"));
 }
 
 //main
