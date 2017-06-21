@@ -73,7 +73,7 @@
         name="my_assembler">
     <remap from="cloud" to="hokuyo_points"/>
     <param name="max_clouds" type="int" value="400" />
-    <param name="fixed_frame" type="string" value="map" />
+    <param name="fixed_frame" type="string" value="servo" />
   </node>
 
 
@@ -84,13 +84,19 @@
      output="screen"
     />
 
-<!--
+<!-- This file is setup for tilting Hokuyo -->
    <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
       <param name="resolution" value="0.1" />
-      <param name="frame_id" type="string" value="map" />
-      <param name="sensor_model/max_range" value="60.0" />
+
+      <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+      <param name="frame_id" type="string" value="servo" />
+
+      <!-- maximum range to integrate (speedup!) -->
+      <param name="sensor_model/max_range" value="30.0" />
+
+      <!-- data source to integrate (PointCloud2) -->
       <remap from="cloud_in" to="/assembled_cloud" />
-   </node> 
--->
+
+   </node>
 
 </launch>
