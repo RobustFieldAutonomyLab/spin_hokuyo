@@ -70,12 +70,12 @@
    />
   
     <node 
-        name="relay" pkg="topic_tools" type="relay"
+        name="relay_hokuyo" pkg="topic_tools" type="relay"
         args="/hokuyo_points /hokuyo_velodyne_combined_cloud ~lazy"
     />
 
     <node 
-        name="relay" pkg="topic_tools" type="relay"
+        name="relay_velodyne" pkg="topic_tools" type="relay"
         args="/velodyne_points /hokuyo_velodyne_combined_cloud ~lazy"
     />
  
