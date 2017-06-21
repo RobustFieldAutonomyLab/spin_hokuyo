@@ -1,0 +1,38 @@
+# This file allows the spawner to set up the necessary topics and set up the motor speed, max angle, etc.  This setup is for one motor, but this file can be expanded to support multiple motors.
+
+###################
+#Commented format:#
+###################
+
+# Header:  (topics for this motor will be prefixed by this name - i.e. /Header/state) 
+#   controller: (do not change anything here - this lets the program find the Dynamixel files
+#       package: dynamixel_controllers
+#       module: joint_position_controller
+#       type: JointPositionController
+#   joint_name: name (name of the servo)
+#   joint_speed: 0.5 (servo speed, higher number = faster)
+#   motor:
+#       id: 1 (motor ID number from manager (see launch file) that corresponds to appropriate servo)
+#       init: 2549 ("relative 0" - all programs written to this motor will consider the absolute position 2549 to be position 0 in the code)
+#       min: 0  (maximum and minimum angle in "absolute terms", greatest numbe is 28672)
+#       max: 28672
+
+
+#################################
+#.yamal for the servo tilt_joint#
+#################################
+
+tilt_controller: 
+    controller: 
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: tilt_joint 
+    joint_speed: 0.5 
+    motor:
+        id: 1 
+        init: 2549 
+        min: 0
+        max: 28672
+
+
