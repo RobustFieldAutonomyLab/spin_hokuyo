@@ -21,19 +21,19 @@ void filter(const sensor_msgs::LaserScan msg)
    {
       if (msg.ranges[n] > 0.3)
       {
-ROS_WARN_STREAM("good pt");
+//ROS_WARN_STREAM("good pt");
          aux.ranges[n] = msg.ranges[n];
       }
  
       else
       {
-ROS_ERROR_STREAM("bad pt");
+//ROS_ERROR_STREAM("bad pt");
          aux.ranges[n] = inf;
       }
    }
 
    pub.publish(aux);
-   ROS_INFO_STREAM("Published Filtered");
+//   ROS_INFO_STREAM("Published Filtered");
 }
 
 int main(int argc, char **argv)
