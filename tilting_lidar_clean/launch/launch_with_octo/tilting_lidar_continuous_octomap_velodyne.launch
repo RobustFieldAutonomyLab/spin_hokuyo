@@ -63,6 +63,9 @@
     args="-d $(find tilting_lidar_clean)/rviz_cfg/tilting_lidar.rviz"/>
    />
 
+  <node pkg="tf" type="static_transform_publisher" name="servo_to_velodyne"
+            args="0.2 0 -0.15 0 0 0 /velodyne /servo 10" />
+
   <node
     pkg="scan_to_pcl"
     type="scan_to_pcl"
