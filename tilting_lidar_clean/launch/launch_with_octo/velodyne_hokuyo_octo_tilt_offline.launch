@@ -73,7 +73,7 @@
    />
 
   <node pkg="tf" type="static_transform_publisher" name="servo_to_velodyne"
-            args="0 0 0 0 0 0 /velodyne /servo 10" />
+            args="0.35 0 -0.13 0 0 0 /velodyne /servo 10" />
 
 
   <node
@@ -91,7 +91,7 @@
 
     <node 
         name="relay_velodyne" pkg="topic_tools" type="relay"
-        args="/velodyne_points /hokuyo_velodyne_combined_cloud"
+        args="/velodyne_cloud_registered /hokuyo_velodyne_combined_cloud"
     />
  
     <node type="point_cloud2_assembler" pkg="laser_assembler"
