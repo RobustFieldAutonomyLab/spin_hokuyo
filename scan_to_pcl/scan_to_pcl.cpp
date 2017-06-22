@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     ros::NodeHandle nh;
 
     ros::Subscriber hokuyo_sub;
-    hokuyo_sub = nh.subscribe<sensor_msgs::LaserScan>("/scan", 1, hokuyo_callbacks);
+    hokuyo_sub = nh.subscribe<sensor_msgs::LaserScan>("/hokuyo_filtered", 1, hokuyo_callbacks);
 
     
     pcl_from_scan = nh.advertise<PointCloud>("hokuyo_points", 1);

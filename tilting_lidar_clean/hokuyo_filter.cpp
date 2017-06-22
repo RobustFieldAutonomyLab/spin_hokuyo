@@ -15,11 +15,11 @@ void filter(const sensor_msgs::LaserScan msg)
    aux.scan_time = msg.scan_time;
    aux.range_min = 0;
    aux.range_max = inf;
-   aux.intensities[1080];
-   aux.ranges.resize(1080);
-   for(int n = 0; n < 1081; n++)
+   aux.intensities[920];
+   aux.ranges.resize(920);
+   for(int n = 0; n < 921; n++)
    {
-      if (msg.ranges[n] > 0.3)
+      if (msg.ranges[n] > 0.5)
       {
 //ROS_WARN_STREAM("good pt");
          aux.ranges[n] = msg.ranges[n];
