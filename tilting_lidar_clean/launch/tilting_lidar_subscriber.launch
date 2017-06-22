@@ -53,8 +53,20 @@
     pkg="hokuyo_node"
     type="hokuyo_node"
     name="hokuyo"
-    output="screen"
-  />
+    output="screen">
+
+    <rosparam>
+      min_ang: -2.0071
+      max_ang: 2.0071
+    </rosparam>
+  </node>
+
+<node
+   pkg="tilting_lidar_clean"
+   type="hokuyo_filter"
+   name="hokuyo_filter"
+   output="screen"
+/>
 
   <node
     pkg="rviz"

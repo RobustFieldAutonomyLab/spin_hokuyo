@@ -53,8 +53,20 @@
     pkg="hokuyo_node"
     type="hokuyo_node"
     name="hokuyo"
-    output="screen"
-  />
+    output="screen">
+
+    <rosparam>
+      min_ang: -2.0071
+      max_ang: 2.0071
+    </rosparam>
+  </node>
+
+<node
+   pkg="tilting_lidar_clean"
+   type="hokuyo_filter"
+   name="hokuyo_filter"
+   output="screen"
+/>
 
   <node
     pkg="rviz"
@@ -62,6 +74,9 @@
     name="rviz"
     args="-d $(find tilting_lidar_clean)/rviz_cfg/tilting_lidar.rviz"/>
    />
+
+  <node pkg="tf" type="static_transform_publisher" name="servo_to_velodyne"
+        args="0.3 0 -0.1 0 0 0 /velodyne /servo 10" />
 
   <node
     pkg="scan_to_pcl"
