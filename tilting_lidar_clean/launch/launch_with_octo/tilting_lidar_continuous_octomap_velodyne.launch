@@ -77,7 +77,7 @@
    />
 
   <node pkg="tf" type="static_transform_publisher" name="servo_to_velodyne"
-            args="0.2 0 -0.15 0 0 0 /velodyne /servo 10" />
+            args="0.35 0 -0.13 0 0 0 /velodyne /servo 10" />
 
   <node
     pkg="scan_to_pcl"
