@@ -19,12 +19,13 @@ For errors, please see below. <br />
 6. If this is fully functional, kill the node and do:<br />
 roslaunch tilting_lidar_clean tilting_lidar_continuous.launch<br />
 This should cause the motor to regularly sweep from 90 to -90 and generate a point cloud and occupancy map.<br />
-Be sure to update the dynamixel_servos_tilting.yaml for position, speed, etc.<br />
+Be sure to update the dynamixel_servos_tilting.yaml for position, speed, etc. as necessary.<br />
 
 # Possible Dynamixel Errors
 Is the USB properly inserted and setup for your computer?  
 Is the Dynamixel connected to a 12V power source via the adapter?  
-Is the switch on the USB adapter at the proper loaction?  
+Is the switch on the USB adapter at the proper loaction?
+Is the ID number of the Dynamixel within the range the .yaml file searches for? (can be configured through Windows Wizard provided by Dyanmixel)
 
 # Source Repos
 ## Dynamixel Controllers
