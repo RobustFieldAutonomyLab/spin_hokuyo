@@ -34,7 +34,7 @@
 
 #include <cstdio>
 #include <ros/ros.h>
-#include<ros/timeh>
+#include<ros/time.h>
 
 // Services
 #include "laser_assembler/AssembleScans2.h"

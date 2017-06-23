@@ -9,8 +9,8 @@ sudo apt-get install ros-indigo-hokuyo-node<br />
 Install Laser Assembler:<br />
 sudo apt-get install ros-indigo-laser-assembler<br />
 2. Download this repocitory into your src file.<br />
-3. In the tutorials/launch folder, update the dynamixel_servos.yaml to match your servo.<br />
-For information on how to fill out the .yaml file, please see dynamixel_servos_explained.yaml under tutorials/launch.<br />
+3. In the motors_base/launch folder, update the dynamixel_servos.yaml to match your servo.<br />
+For information on how to fill out the .yaml file, please see dynamixel_servos_basic.yaml under motors_base/launch.<br />
 4. catkin_make and source the files, then:<br />
 roslaunch motors_base basic_motors.launch<br />
 The motor controller and spawner should properly generate topics that correspond to the motor. (i.e. no red text)<br />
@@ -19,13 +19,12 @@ For errors, please see below. <br />
 6. If this is fully functional, kill the node and do:<br />
 roslaunch tilting_lidar_clean tilting_lidar_continuous.launch<br />
 This should cause the motor to regularly sweep from 90 to -90 and generate a point cloud and occupancy map.<br />
-Be sure to update the dynamixel_servos_tilting.yaml for position, speed, etc. as necessary.<br />
+Be sure to update the dynamixel_servos_tilting.yaml for position, speed, etc.<br />
 
 # Possible Dynamixel Errors
 Is the USB properly inserted and setup for your computer?  
 Is the Dynamixel connected to a 12V power source via the adapter?  
-Is the switch on the USB adapter at the proper loaction?
-Is the ID number of the Dynamixel within the range the .yaml file searches for? (can be configured through Windows Wizard provided by Dyanmixel)
+Is the switch on the USB adapter at the proper loaction?  
 
 # Source Repos
 ## Dynamixel Controllers
