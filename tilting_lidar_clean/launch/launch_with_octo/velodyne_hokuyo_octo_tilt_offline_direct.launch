@@ -73,6 +73,8 @@
    output="screen"
 />
 
+
+
   <node
     pkg="rviz"
     type="rviz"
@@ -101,7 +103,8 @@
         name="relay_velodyne" pkg="topic_tools" type="relay"
         args="/velodyne_cloud_registered /hokuyo_velodyne_combined_cloud"
     />
- 
+
+<!-- 
     <node type="point_cloud2_assembler" pkg="laser_assembler"
         name="my_assembler">
     <remap from="cloud" to="hokuyo_velodyne_combined_cloud"/>
@@ -116,13 +119,13 @@
      name="combine_clouds"
      output="screen"
     />
-
+-->
  
     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
          <param name="resolution" value="0.2" />
          <param name="frame_id" type="string" value="map" />
          <param name="sensor_model/max_range" value="300.0" />
-         <remap from="cloud_in" to="/assembled_cloud" />
+         <remap from="cloud_in" to="/hokuyo_velodyne_combined_cloud" />
     </node>
 
     <arg name="name"/>
