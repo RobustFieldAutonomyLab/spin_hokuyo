@@ -43,10 +43,14 @@ class Dynamixel {
 
 //creates publishers and subscriber
 Dynamixel::Dynamixel() {
+    //publishe motor movements
     pub_1 = nh.advertise<std_msgs::Float64>("/tilt_controller/command", 10);
+    //publish start time of sweep
     pub_2 = nh.advertise<std_msgs::Time>("/time/start_time", 1);
+    //publish end time of sweep
     pub_3 = nh.advertise<std_msgs::Time>("/time/end_time", 1);
-    sub   = nh.subscribe("/tilt_controller/state", 1, &obtainValues); //checks error
+    //subscribe to /state for motor error
+    sub   = nh.subscribe("/tilt_controller/state", 1, &obtainValues);
 }
 
 //creates message and publishes -> degree to radian to publish
@@ -60,8 +64,9 @@ void Dynamixel::moveMotor(double position) {
 
 //ensures proper alignment
 void Dynamixel::checkError() {
-    ros::spinOnce();
-    while((abs (error))>0.05) {
+    ros::spinOnce(); //get starting value of motor position
+
+    while((abs (error))>0.05) {  //keep waiting and checking error until < 0.05
         ros::Duration(.1).sleep();
         ros::spinOnce();
     }    
@@ -111,6 +116,7 @@ void sweep(const std_msgs::Empty &msg) {
 
 //main
 int main(int argc, char **argv) {
+
     //initialize
     ros::init(argc, argv, "Motor_Tilt");
     ros::NodeHandle nh;
@@ -131,7 +137,7 @@ int main(int argc, char **argv) {
     min_angle = min;
     pause_time = pause;
 
-    //Wait for servo init
+    //Wait for servo init by waiting for /state topic
     ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(100));
 
     //subscribe to empty message to run sweep

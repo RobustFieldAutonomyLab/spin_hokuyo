@@ -9,7 +9,7 @@
 
 //This code allows the motor to move back and forth to a maximum and minimum number of degrees defined in parameters.
 //This iteration has the servo initilize and then move back and forth continuously.
-//It also sends times to the combine_clouds_subscriber to allow individual point clouds to be compiled.
+//It also sends times to the combine_clouds_subscriber to allow point clouds to be compiled.
 
 using namespace std;
 
@@ -19,7 +19,7 @@ int max_angle;
 int min_angle;
 float pause_time;
 
-//obtains error from message
+//obtains error from dynamixel message
 void obtainValues(const dynamixel_msgs::JointState &msg) {
     error = msg.error;
 }
@@ -43,10 +43,14 @@ class Dynamixel {
 
 //creates publishers and subscriber
 Dynamixel::Dynamixel() {
+    //publish motor commands
     pub_1 = nh.advertise<std_msgs::Float64>("/tilt_controller/command", 10);
+    //publish start time of sweep
     pub_2 = nh.advertise<std_msgs::Time>("/time/start_time", 1);
+    //publish end time of sweep
     pub_3 = nh.advertise<std_msgs::Time>("/time/end_time", 1);
-    sub   = nh.subscribe("/tilt_controller/state", 1, &obtainValues); //checks error
+    //subscribe to motor error messages
+    sub   = nh.subscribe("/tilt_controller/state", 1, &obtainValues);
 }
 
 //creates message and publishes -> degree to radian to publish
@@ -60,8 +64,9 @@ void Dynamixel::moveMotor(double position) {
 
 //ensures proper alignment
 void Dynamixel::checkError() {
-    ros::spinOnce();
-    while((abs (error))>0.05) {
+    ros::spinOnce(); //get starting value of motor position error
+
+    while((abs (error))>0.05) { //keep waiting and checking error until < 0.05
         ros::Duration(.1).sleep();
         ros::spinOnce();
     }
@@ -133,7 +138,7 @@ int main(int argc, char **argv) {
     min_angle = min;
     pause_time = pause;
 
-    //Wait for servo init
+    //Wait for servo init by waiting for /state message
     ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(100));
 
     //pause to allow motor object to initialize and set to min_angle

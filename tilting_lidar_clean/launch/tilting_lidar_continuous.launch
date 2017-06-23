@@ -1,3 +1,5 @@
+<!-- This launch file causes the Hokuyo to sweep back and forth continously until the node is killed. -->
+
 <launch>
 
    <node
@@ -98,15 +100,5 @@
      name="combine_clouds"
      output="screen"
     />
-
-<!--
-    <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
-         <param name="resolution" value="0.1" />
-         <param name="frame_id" type="string" value="map" />
-         <param name="sensor_model/max_range" value="30.0" />
-         <remap from="cloud_in" to="/assembled_cloud" />
-
-    </node>
--->
 
 </launch>

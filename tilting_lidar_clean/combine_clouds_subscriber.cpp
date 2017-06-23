@@ -34,19 +34,17 @@
 
 #include <cstdio>
 #include <ros/ros.h>
+#include<ros/timeh>
 
 // Services
 #include "laser_assembler/AssembleScans2.h"
 
 // Messages
 #include "sensor_msgs/PointCloud2.h"
-
 #include"dynamixel_msgs/JointState.h"
 #include"std_msgs/Time.h"
-#include<ros/time.h>
 
-/* This is a modified combine_clouds file that subscribes to times published while tilting the motor and sends those as necessary
-   to the compilation service to put all of the point clouds together*/
+/* This is a modified combine_clouds.cpp file that subscribes to times published while tilting the motor and sends those as necessary to the compilation service to put all of the point clouds together.  One cloud is published for each complete sweep (i.e. -90 -> +90 -> -90).*/
 
 using namespace laser_assembler;
 
@@ -66,7 +64,7 @@ void endTime(const std_msgs::Time &msg) {
     go = 1;
 }
 
-//compilation class created by combine_clouds with modifications to remove timer and work with our times
+//compilation class created by combine_clouds with modifications to remove timer and work with motor times
 class PeriodicSnapshotter {
 
     public:
@@ -81,7 +79,7 @@ class PeriodicSnapshotter {
     }
 
     void compile() {
-        // Populate our service request based on our timer callback times
+        // Populate our service request based on motor times
         AssembleScans2 srv;
         srv.request.begin = start;
         srv.request.end   = end;
@@ -102,20 +100,21 @@ class PeriodicSnapshotter {
     ros::ServiceClient client_;
 } ;
 
-
-int main(int argc, char **argv) {
+//main
+int main(int argc, char **argv)
+{
     //initialize and wait for necessary services, etc.
-    ros::init(argc, argv, "periodic_snapshotter");
+    ros::init(argc, argv, "Cloud_Compiler");
     ros::NodeHandle n;
     ROS_INFO("Waiting for [build_cloud] to be advertised");
   
     //Wait for build cloud service to init
     ros::service::waitForService("build_cloud");
   
-    //Wait for dynamixel servo to init
+    //Wait for dynamixel servo to init by waiting for /state topic
     ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));
   
-    ROS_INFO_STREAM("Found build_cloud! Starting the snapshotter");
+    ROS_INFO_STREAM("Found build_cloud! Starting the Cloud Compiler");
   
     //subscribes to start and end time published by tilting motor
     ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
