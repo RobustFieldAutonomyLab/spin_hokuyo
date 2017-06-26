@@ -2,7 +2,7 @@
 
 <param name="use_sim_time" value="true" />
 
-<!--
+
    <node
      name="dynamixel_manager"
      pkg="dynamixel_controllers"
@@ -64,16 +64,12 @@
     </rosparam>
   </node>
 
--->
-
 <node
    pkg="tilting_lidar_clean"
    type="hokuyo_filter"
    name="hokuyo_filter"
    output="screen"
 />
-
-
 
   <node
     pkg="rviz"
