@@ -1,0 +1,47 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(plane_extract_ransac)
+
+# set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3")
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  sensor_msgs
+  cv_bridge
+  dynamic_reconfigure
+  message_generation
+  image_transport
+  tf
+  pcl_ros
+  pcl_conversions
+  geometry_msgs
+  nav_msgs
+)
+
+find_package(PCL REQUIRED)
+find_package(OpenCV REQUIRED)
+
+catkin_package(
+  # INCLUDE_DIRS include
+#  LIBRARIES
+  CATKIN_DEPENDS
+  DEPENDS PCL
+)
+
+###########
+## Build ##
+###########
+
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
+)
+
+
+# Point Cloud Segmentation
+add_executable(plane_extract_ransac plane_extract_ransac.cpp)
+target_link_libraries(plane_extract_ransac ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES})
+

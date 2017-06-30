@@ -45,12 +45,16 @@
     output="screen"
    />
 
+
+
   <node
     name="tilt_transform"
     pkg="tilting_lidar_clean"
     type="tilt_transform"
     output="screen"
   />
+
+
 
  <node
     pkg="hokuyo_node"
@@ -63,6 +67,7 @@
       max_ang: 2.0071
     </rosparam>
   </node>
+-->
 
 -->
 
@@ -73,15 +78,19 @@
    output="screen"
 />
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 8d67e4e9c6c14dc8f3d8149823edc9d1755e79e2
   <node
     pkg="rviz"
     type="rviz"
     name="rviz"
-    args="-d $(find tilting_lidar_clean)/rviz_cfg/combined_octomap.rviz"/>
+    args="-d $(find tilting_lidar_clean)/rviz_cfg/tilting_lidar.rviz"/>
    />
 
   <node pkg="tf" type="static_transform_publisher" name="servo_to_velodyne"
-            args="0.35 0 -0.13 0 0 -0.052 /velodyne /servo 10" />
+            args="0.35 0 -0.13 0 0 0 /velodyne /servo 10" />
 
 
   <node
@@ -119,14 +128,17 @@
 
  
     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
-         <param name="resolution" value="0.2" />
+         <param name="resolution" value="0.1" />
          <param name="frame_id" type="string" value="map" />
          <param name="sensor_model/max_range" value="300.0" />
          <remap from="cloud_in" to="/assembled_cloud" />
     </node>
 
+<<<<<<< HEAD
+=======
     <arg name="path"/>
     <arg name="speed" default="1"/>
     <node pkg="rosbag" type="play" name="player" output="screen" args="$(arg path) -r $(arg speed) --topics /velodyne_cloud_registered /scan /tf /time/start_time /time/end_time --clock" />
+>>>>>>> 8d67e4e9c6c14dc8f3d8149823edc9d1755e79e2
 
 </launch>

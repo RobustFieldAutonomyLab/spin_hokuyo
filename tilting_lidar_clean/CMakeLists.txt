@@ -8,7 +8,7 @@ project(tilting_lidar_clean)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs tf sensor_msgs)
-
+find_package(PCL REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -119,6 +119,14 @@ target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})
 add_executable(hokuyo_filter hokuyo_filter.cpp)
 target_link_libraries(hokuyo_filter ${catkin_LIBRARIES})
 
+add_executable(line_RANSAC line_RANSAC_distance.cpp)
+target_link_libraries(line_RANSAC ${catkin_LIBRARIES})
+
+add_executable(pcl_Conversion pointCloud2_to_pcl.cpp)
+target_link_libraries(pcl_Conversion ${catkin_LIBRARIES})
+
+include_directories(${PCL_INCLUDE_DIRS})
+target_link_libraries(pcl_Conversion ${PCL_LIBRARIES})
 ###########
 ## Build ##
 ###########
