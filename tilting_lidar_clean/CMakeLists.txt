@@ -102,7 +102,8 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES tilter
 #  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
+  DEPENDS
+     PCL
 )
 include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(tilt_motor tilt_motor_single_sweep_continuous.cpp)
@@ -124,6 +125,11 @@ target_link_libraries(line_RANSAC ${catkin_LIBRARIES})
 
 add_executable(pcl_Conversion pointCloud2_to_pcl.cpp)
 target_link_libraries(pcl_Conversion ${catkin_LIBRARIES})
+target_link_libraries(pcl_Conversion ${PCL_LIBRARIES})
+
+add_executable(hokuyo_ground_filter hokuyo_ground_filter.cpp)
+target_link_libraries(hokuyo_ground_filter ${catkin_LIBRARIES})
+target_link_libraries(hokuyo_ground_filter ${PCL_LIBRARIES})
 
 include_directories(${PCL_INCLUDE_DIRS})
 target_link_libraries(pcl_Conversion ${PCL_LIBRARIES})
