@@ -52,6 +52,8 @@ using namespace laser_assembler;
 ros::Time start;
 ros::Time end;
 int go = 0;
+std::string assembled_cloud_mode;
+int scan_time;
 
 //call back for start time, saves in global variable
 void startTime(const std_msgs::Time &msg) {
@@ -76,6 +78,11 @@ class PeriodicSnapshotter {
         // Create the service client for calling the assembler
         client_ = n_.serviceClient<AssembleScans2>("assemble_scans2");
 
+        // Start the timer that will trigger the processing loop (timerCallback)
+        timer_ = n_.createTimer(ros::Duration(scan_time,0), &PeriodicSnapshotter::timerCallback, this);
+
+        // Need to track if we've called the timerCallback at least once
+        first_time_ = true;
     }
 
     void compile() {
@@ -94,10 +101,38 @@ class PeriodicSnapshotter {
         } 
     }
 
+    void timerCallback(const ros::TimerEvent& e) {
+    // We don't want to build a cloud the first callback, since we we
+    //   don't have a start and end time yet
+        if (first_time_) {
+            first_time_ = false;
+            return;
+        }
+
+        // Populate our service request based on our timer callback times
+        AssembleScans2 srv;
+        srv.request.begin = e.last_real;
+        srv.request.end   = e.current_real;
+
+        // Make the service call
+        if (client_.call(srv)) {
+            ROS_INFO("Published Cloud") ;
+            pub_.publish(srv.response.cloud);
+        }  
+
+        else {
+            ROS_ERROR("Error making service call\n") ;
+        }
+
+        ROS_ERROR_STREAM(scan_time);
+    }
+
     private:
     ros::NodeHandle n_;
     ros::Publisher pub_;
     ros::ServiceClient client_;
+    ros::Timer timer_;
+    bool first_time_;
 } ;
 
 //main
@@ -107,38 +142,46 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "Cloud_Compiler");
     ros::NodeHandle n;
     ROS_INFO("Waiting for [build_cloud] to be advertised");
-  
+    
+    n.param<std::string>("assembled_cloud_mode", assembled_cloud_mode, "subscriber");
+    n.param<int>("scan_time", scan_time, 5);
+
     //Wait for build cloud service to init
     ros::service::waitForService("build_cloud");
-  
-    //Wait for dynamixel servo to init by waiting for /state topic
-    ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));
-  
     ROS_INFO_STREAM("Found build_cloud! Starting the Cloud Compiler");
-  
-    //subscribes to start and end time published by tilting motor
-    ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
-    ros::Subscriber sub_2=n.subscribe("/time/end_time", 1, &endTime);
+
+    if (assembled_cloud_mode == "subscriber"){
+        //Wait for dynamixel servo to init by waiting for /state topic
+        ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));   
+        //subscribes to start and end time published by tilting motor
+        ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
+        ros::Subscriber sub_2=n.subscribe("/time/end_time", 1, &endTime);
+    }
 
     PeriodicSnapshotter snapshotter;
 
-    while(ros::ok()) {
-        //when an end time comes in (which only occurs after start time is updated) run the compiler
-        if(go==1) {
-            snapshotter.compile();
-            go = 0;
-        }
+    if (assembled_cloud_mode == "subscriber"){
+        while(ros::ok()) {
+            //when an end time comes in (which only occurs after start time is updated) run the compiler
+            if(go==1) {
+                snapshotter.compile();
+                go = 0;
+            }
 
-        //wait for messages when not compiling
-        else{
-            ros::spinOnce();
+            //wait for messages when not compiling
+            else{
+                ros::spinOnce();
+            }
+  
+        //pause to save computing power
+        ros::Duration(0.01).sleep();
         }
-  
-    //pause to save computing power
-    ros::Duration(0.01).sleep();
     }
-  
+
+    else if (assembled_cloud_mode == "time"){
+        ros::spin();
+    }
+
 return 0;
 
 }
-
