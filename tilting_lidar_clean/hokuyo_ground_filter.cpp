@@ -38,13 +38,14 @@ void filterGround (const sensor_msgs::PointCloud2ConstPtr& msg)
     aux.width = cloud.width;
  
    int n = cloud.width;
-ROS_ERROR_STREAM(n);
 
-    aux.points.resize(201585);
+   int tolerance = max_z + 0.1;
+
+    aux.points.resize(n);
 
     for (int i=1; i <= n; i++)
     {
-       if(cloud.points[i].z > max_z)
+       if(cloud.points[i].z > tolerance)
        {
           aux.points[i].x = cloud.points[i].x;
           aux.points[i].y = cloud.points[i].y;
@@ -57,10 +58,11 @@ ROS_ERROR_STREAM(n);
           aux.points[i].y = inf;
        }
     }
-ROS_WARN_STREAM("hi");
+
     sensor_msgs::PointCloud2 filtered;
     pcl::toROSMsg(aux, filtered);
     pub.publish(filtered);
+    ROS_INFO_STREAM("Removed Floor");
     z_obtained = 0;
 }
 
