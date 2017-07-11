@@ -69,8 +69,6 @@
   </node>
 -->
 
--->
-
 <node
    pkg="tilting_lidar_clean"
    type="hokuyo_filter"
@@ -78,10 +76,6 @@
    output="screen"
 />
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8d67e4e9c6c14dc8f3d8149823edc9d1755e79e2
   <node
     pkg="rviz"
     type="rviz"
@@ -108,12 +102,12 @@
 
     <node 
         name="relay_velodyne" pkg="topic_tools" type="relay"
-        args="/velodyne_cloud_registered /hokuyo_velodyne_combined_cloud"
+        args="/velodyne_points /hokuyo_velodyne_combined_cloud"
     />
  
     <node type="point_cloud2_assembler" pkg="laser_assembler"
         name="my_assembler">
-    <remap from="cloud" to="hokuyo_velodyne_combined_cloud"/>
+    <remap from="cloud" to="velodyne_points"/>
     <param name="max_clouds" type="int" value="10000" />
     <param name="fixed_frame" type="string" value="map" />
   </node>
@@ -134,11 +128,9 @@
          <remap from="cloud_in" to="/assembled_cloud" />
     </node>
 
-<<<<<<< HEAD
-=======
     <arg name="path"/>
     <arg name="speed" default="1"/>
-    <node pkg="rosbag" type="play" name="player" output="screen" args="$(arg path) -r $(arg speed) --topics /velodyne_cloud_registered /scan /tf /time/start_time /time/end_time --clock" />
->>>>>>> 8d67e4e9c6c14dc8f3d8149823edc9d1755e79e2
+    <node pkg="rosbag" type="play" name="player" output="screen" args="$(arg path) -r $(arg speed) --topics /velodyne_points /scan /tf /time/start_time /time/end_time --clock" />
+
 
 </launch>

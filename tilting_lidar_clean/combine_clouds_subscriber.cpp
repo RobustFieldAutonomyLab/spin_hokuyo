@@ -51,6 +51,7 @@ using namespace laser_assembler;
 //global variables
 ros::Time start;
 ros::Time end;
+ros::Time init;
 int go = 0;
 std::string assembled_cloud_mode;
 int scan_time;
@@ -106,6 +107,22 @@ class PeriodicSnapshotter {
     //   don't have a start and end time yet
         if (first_time_) {
             first_time_ = false;
+
+        // Populate our service request based on our timer callback times
+        AssembleScans2 srv;
+        srv.request.begin = init;
+        srv.request.end   = e.current_real;
+
+        // Make the service call
+        if (client_.call(srv)) {
+            ROS_INFO("Published Cloud") ;
+            pub_.publish(srv.response.cloud);
+        }
+
+        else {
+            ROS_ERROR("Error making service call\n") ;
+        }
+
             return;
         }
 
@@ -159,7 +176,7 @@ int main(int argc, char **argv)
     }
 
     PeriodicSnapshotter snapshotter;
-
+    init = ros::Time::now();
     if (assembled_cloud_mode == "subscriber"){
         while(ros::ok()) {
             //when an end time comes in (which only occurs after start time is updated) run the compiler
