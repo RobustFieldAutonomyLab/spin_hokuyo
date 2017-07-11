@@ -20,7 +20,7 @@ void pclConversion (const sensor_msgs::PointCloud2ConstPtr& msg)
     std_msgs::Float64 aux;
 
     int n = cloud.width;
-    int max_z = -999;
+    float max_z = -999;
 
     for (int i=1; i <= n; i++)
     {
