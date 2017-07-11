@@ -79,7 +79,7 @@
     pkg="rviz"
     type="rviz"
     name="rviz"
-    args="-d $(find tilting_lidar_clean)/rviz_cfg/ransac_offline.rviz"/>
+    args="-d $(find tilting_lidar_clean)/rviz_cfg/removed_floor.rviz"/>
    />
 
   <node pkg="tf" type="static_transform_publisher" name="servo_to_velodyne"
@@ -105,12 +105,12 @@
     />
 
     <param name="assembled_cloud_mode" type="string" value="time" />
-    <param name="scan_time" type="int" value="30" />
-    <arg name="assemble" default="velodyne_cloud_registered"/> 
-    <node type="point_cloud2_assembler" pkg="laser_assembler"
-        name="my_assembler">
+    <param name="scan_time" type="int" value="10" />
+    <arg name="assemble" default="velodyne_points"/> 
+
+  <node type="point_cloud2_assembler" pkg="laser_assembler" name="my_assembler">
     <remap from="cloud" to="$(arg assemble)"/>
-    <param name="max_clouds" type="int" value="1000000" />
+    <param name="max_clouds" type="int" value="10000" />
     <param name="fixed_frame" type="string" value="map" />
   </node>
 
@@ -121,7 +121,6 @@
      name="combine_clouds"
      output="screen"
     />
-
  
     <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
          <param name="resolution" value="0.3" />
@@ -132,17 +131,18 @@
 
     <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
 
-    <!-- Run a VoxelGrid filter to clean NaNs and downsample the data -->
     <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
       <remap from="~input" to="/assembled_cloud" />
       <rosparam>
         filter_field_name: z
         filter_limit_min: -10000
         filter_limit_max: 10000
-        filter_limit_negative: Fa
-        leaf_size: 0.3
+        filter_limit_negative: False
+        leaf_size: 1
       </rosparam>
     </node>
+
+    <node pkg="tilting_lidar_clean" type="hokuyo_ground_filter" name="hokuyo_ground_filter"/>
 
     <node pkg="plane_extract_ransac" type="plane_extract_ransac" name="plane_extract_ransac">
     	<remap from="assembled_cloud" to="/voxel_grid/output" />
@@ -154,8 +154,9 @@
 
     <arg name="path"/>
     <arg name="speed" default="1"/>
-    <arg name="other" default=""/>
-    <arg name="topics" default=""/>
-    <node pkg="rosbag" type="play" name="player" output="screen" args="$(arg path) -r $(arg speed) $(arg topics) --clock $(arg other)" />
+<!--    <arg name="other" default=""/>
+    <arg name="topics" default=""/> -->
+    <node pkg="rosbag" type="play" name="player" output="screen" args="$(arg path) -r $(arg speed) --topics /tf /velodyne_points /scan --clock" />
+
 
 </launch>
