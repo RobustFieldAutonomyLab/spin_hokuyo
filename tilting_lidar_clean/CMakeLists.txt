@@ -131,6 +131,9 @@ add_executable(hokuyo_ground_filter hokuyo_ground_filter.cpp)
 target_link_libraries(hokuyo_ground_filter ${catkin_LIBRARIES})
 target_link_libraries(hokuyo_ground_filter ${PCL_LIBRARIES})
 
+add_executable(commander tutorials/node/commander.cpp)
+target_link_libraries(commander ${catkin_LIBRARIES})
+
 include_directories(${PCL_INCLUDE_DIRS})
 ###########
 ## Build ##

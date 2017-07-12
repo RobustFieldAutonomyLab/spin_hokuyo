@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>tilting_lidar_clean</name>
+  <name>spin_hokuyo</name>
   <version>0.0.0</version>
   <description>The cleaned up tilter package</description>
 
