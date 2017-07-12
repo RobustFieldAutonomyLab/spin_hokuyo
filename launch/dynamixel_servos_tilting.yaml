@@ -1,4 +1,4 @@
-# This file is configured for sweeping the Hokuyo
+# This file is the original configuration for spin_hokuyuo
 
 tilt_controller:
     controller:
