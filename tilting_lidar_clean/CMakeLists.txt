@@ -121,6 +121,7 @@ target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})
 
 add_executable(hokuyo_robot_filter hokuyo_ground_filter.cpp)
 target_link_libraries(hokuyo_robot_filter ${catkin_LIBRARIES})
+target_link_libraries(hokuyo_robot_filter ${PCL_LIBRARIES})
 
 add_executable(floor_max_z floor_max_z.cpp)
 target_link_libraries(floor_max_z ${catkin_LIBRARIES})
