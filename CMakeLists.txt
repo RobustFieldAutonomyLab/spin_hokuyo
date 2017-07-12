@@ -58,14 +58,6 @@ add_executable(hokuyo_robot_filter src/hokuyo_ground_filter.cpp)
 target_link_libraries(hokuyo_robot_filter ${catkin_LIBRARIES})
 target_link_libraries(hokuyo_robot_filter ${PCL_LIBRARIES})
 
-add_executable(floor_max_z src/floor_max_z.cpp)
-target_link_libraries(floor_max_z ${catkin_LIBRARIES})
-target_link_libraries(floor_max_z ${PCL_LIBRARIES})
-
-add_executable(hokuyo_ground_filter src/hokuyo_ground_filter.cpp)
-target_link_libraries(hokuyo_ground_filter ${catkin_LIBRARIES})
-target_link_libraries(hokuyo_ground_filter ${PCL_LIBRARIES})
-
 add_executable(commander tutorials/node/commander.cpp)
 target_link_libraries(commander ${catkin_LIBRARIES})
 
