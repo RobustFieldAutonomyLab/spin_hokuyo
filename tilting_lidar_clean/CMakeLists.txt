@@ -120,9 +120,9 @@ target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})
 add_executable(hokuyo_robot_filter hokuyo_ground_filter.cpp)
 target_link_libraries(hokuyo_robot_filter ${catkin_LIBRARIES})
 
-add_executable(pcl_Conversion pointCloud2_to_pcl.cpp)
-target_link_libraries(pcl_Conversion ${catkin_LIBRARIES})
-target_link_libraries(pcl_Conversion ${PCL_LIBRARIES})
+add_executable(floor_max_z floor_max_z.cpp)
+target_link_libraries(floor_max_z ${catkin_LIBRARIES})
+target_link_libraries(floor_max_z ${PCL_LIBRARIES})
 
 add_executable(hokuyo_ground_filter hokuyo_ground_filter.cpp)
 target_link_libraries(hokuyo_ground_filter ${catkin_LIBRARIES})
