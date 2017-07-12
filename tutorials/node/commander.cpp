@@ -4,10 +4,15 @@
 #include<dynamixel_msgs/JointState.h>
 #include<cmath>
 
+/*  This program takes in numbers from the /commands topic and prepares them before publishing to the servo.  The number
+on the /commands topic corresponds to a location on the servo's rotation in degrees.  Each position is fixed
+(i.e. There is a 0 deg. position and a 180 deg. position.  Sending a command of 180 will not necessarily make the motor
+turn 180 deg.).  The program then converts the degree value into radians and publishes the value to the servo.  The program
+also allows for enough time to pass prior to the next command to allow the servo to move */
+
 using namespace std;
 
-/*  This program takes in numbers from the /commands topic and prepares them before publishing to the servo.  The number on the /commands topic corresponds to a location on the servo's rotation in degrees.  Each position is fixed (i.e. There is a 0 deg. position and a 180 deg. position.  Sending a command of 180 will not necessarily make the motor turn 180 deg.).  The program then converts the degree value into radians and publishes the value to the servo.  The program also allows for enough time to pass prior to the next command to allow the servo to move */
-
+//global variables
 float error = 1;
 int go = 0;
 float place;
@@ -15,7 +20,6 @@ float place;
 //obtains error from message
 void obtainValues(const dynamixel_msgs::JointState &msg)
 {
-  //ROS_ERROR_STREAM("hi");
   error = msg.error;
 }  
 
@@ -62,7 +66,6 @@ void Dynamixel::checkError()
   }
 }
 
-
 //obtains requested position
 void transfer(const std_msgs::Float64 &msg)
 {
@@ -83,11 +86,11 @@ int main (int argc, char **argv)
   //subscribes to external requests
   ros::Subscriber sub_2=nh.subscribe("/commands", 1, &transfer);  //external
 
-ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
+  ros::Subscriber sub=nh.subscribe("/tilt_controller/state", 5, &obtainValues); //checks error
 
-//weird ross::ok() and spinOnce() loop needed to make it work
-while(ros::ok())
- {
+  //Wait for servo init by waiting for /state message
+  ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(100));
+  
   //if new request has been received
   if(go==1)
   {
@@ -95,7 +98,6 @@ while(ros::ok())
     motor.moveMotor(place);
     ros::Duration(0.5).sleep();
     motor.checkError();
-    ROS_INFO_STREAM("**");
     ros::Duration(0.5).sleep(); //saftety break
     go = 0;
   }
@@ -104,5 +106,4 @@ while(ros::ok())
   { 
     ros::spinOnce();
   }
- }
 }
