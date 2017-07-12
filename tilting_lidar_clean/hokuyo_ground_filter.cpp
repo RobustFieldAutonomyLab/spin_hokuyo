@@ -39,7 +39,7 @@ void filterGround (const sensor_msgs::PointCloud2ConstPtr& msg)
  
    int n = cloud.width;
 
-   int tolerance = max_z + 0.1;
+   float tolerance = max_z + 0.1;
 
     aux.points.resize(n);
 

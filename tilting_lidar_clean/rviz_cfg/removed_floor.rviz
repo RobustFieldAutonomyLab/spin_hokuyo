@@ -28,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Visualization Manager:
   Class: ""
   Displays:
@@ -280,7 +280,13 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
+        aft_mapped:
+          Value: true
         base_link:
+          Value: true
+        camera:
+          Value: true
+        camera_init:
           Value: true
         chassis_link:
           Value: true
@@ -295,6 +301,8 @@ Visualization Manager:
         imu_link:
           Value: true
         laser:
+          Value: true
+        laser_odom:
           Value: true
         map:
           Value: true
@@ -333,48 +341,53 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          odom:
-            base_link:
-              chassis_link:
-                fenders_link:
-                  {}
-                front_left_wheel_link:
-                  {}
-                front_right_wheel_link:
-                  {}
-                imu_link:
-                  {}
-                mid_mount:
-                  front_mount:
+          camera_init:
+            aft_mapped:
+              {}
+            camera:
+              base_link:
+                chassis_link:
+                  fenders_link:
                     {}
-                  rear_mount:
-                    rear_bridge:
-                      rear_navsat:
+                  front_left_wheel_link:
+                    {}
+                  front_right_wheel_link:
+                    {}
+                  imu_link:
+                    {}
+                  mid_mount:
+                    front_mount:
+                      {}
+                    rear_mount:
+                      rear_bridge:
+                        rear_navsat:
+                          {}
+                      rear_standoff0:
                         {}
-                    rear_standoff0:
-                      {}
-                    rear_standoff1:
-                      {}
-                    rear_standoff2:
-                      {}
-                    rear_standoff3:
-                      {}
-                  velodyne:
-                    servo:
-                      laser:
+                      rear_standoff1:
                         {}
-                navsat_link:
-                  {}
-                rear_left_wheel_link:
-                  {}
-                rear_right_wheel_link:
-                  {}
+                      rear_standoff2:
+                        {}
+                      rear_standoff3:
+                        {}
+                    velodyne:
+                      servo:
+                        laser:
+                          {}
+                  navsat_link:
+                    {}
+                  rear_left_wheel_link:
+                    {}
+                  rear_right_wheel_link:
+                    {}
+            laser_odom:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 8.6359
+        Max Value: 7.7034
         Min Value: 0
         Value: true
       Axis: Z
@@ -382,7 +395,7 @@ Visualization Manager:
       Class: rviz/PointCloud2
       Color: 255; 255; 255
       Color Transformer: AxisColor
-      Decay Time: 1000
+      Decay Time: 0
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
@@ -432,15 +445,15 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.0306584
-        Y: 0.0883355
-        Z: 4.33633e-06
+        X: 0.10397
+        Y: 3.54447
+        Z: 1.19657e-05
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.374801
+      Pitch: 0.449801
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 0.772693
+      Yaw: 0.817693
     Saved: ~
 Window Geometry:
   Displays:

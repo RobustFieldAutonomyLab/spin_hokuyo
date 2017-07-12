@@ -28,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -129,7 +129,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: servo
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -150,7 +150,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 27.7333
+      Distance: 38.9633
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
@@ -162,10 +162,10 @@ Visualization Manager:
         Z: 3.43607
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.185398
+      Pitch: 0.380398
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.7654
+      Yaw: 2.3804
     Saved: ~
 Window Geometry:
   Displays:

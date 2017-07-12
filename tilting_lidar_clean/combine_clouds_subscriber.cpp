@@ -54,7 +54,7 @@ ros::Time end;
 ros::Time init;
 int go = 0;
 std::string assembled_cloud_mode;
-int scan_time;
+double scan_time;
 
 //call back for start time, saves in global variable
 void startTime(const std_msgs::Time &msg) {
@@ -80,7 +80,7 @@ class PeriodicSnapshotter {
         client_ = n_.serviceClient<AssembleScans2>("assemble_scans2");
 
         // Start the timer that will trigger the processing loop (timerCallback)
-        timer_ = n_.createTimer(ros::Duration(scan_time,0), &PeriodicSnapshotter::timerCallback, this);
+        timer_ = n_.createTimer(ros::Duration(scan_time), &PeriodicSnapshotter::timerCallback, this);
 
         // Need to track if we've called the timerCallback at least once
         first_time_ = true;
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
     ROS_INFO("Waiting for [build_cloud] to be advertised");
     
     n.param<std::string>("assembled_cloud_mode", assembled_cloud_mode, "subscriber");
-    n.param<int>("scan_time", scan_time, 5);
+    n.param<double>("scan_time", scan_time, 5);
 
     //Wait for build cloud service to init
     ros::service::waitForService("build_cloud");

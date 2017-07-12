@@ -105,7 +105,7 @@
     />
 
     <param name="assembled_cloud_mode" type="string" value="time" />
-    <param name="scan_time" type="int" value="10" />
+    <param name="scan_time" type="double" value="0.3" />
     <arg name="assemble" default="velodyne_points"/> 
 
   <node type="point_cloud2_assembler" pkg="laser_assembler" name="my_assembler">
