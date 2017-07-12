@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(tilting_lidar_clean)
+project(spin_hokuyo)
 
 ## Add support for C++11, supported in ROS Kinetic and newer
 # add_definitions(-std=c++11)
@@ -111,8 +111,8 @@ add_executable(tilt_transform tilt_transform.cpp)
 target_link_libraries(tilt_motor ${catkin_LIBRARIES})
 target_link_libraries(tilt_transform ${catkin_LIBRARIES})
 
-add_executable(point_cloud_assembler point_cloud_assembler.cpp)
-target_link_libraries(point_cloud_assembler ${catkin_LIBRARIES})
+add_executable(pcl_assembler_client pcl_assembler_client.cpp)
+target_link_libraries(pcl_assembler_client ${catkin_LIBRARIES})
 
 add_executable(tilt_motor_subscribe tilt_motor_single_sweep_subscribe.cpp)
 target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})

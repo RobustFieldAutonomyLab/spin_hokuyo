@@ -52,7 +52,7 @@ void filter(const sensor_msgs::LaserScan msg)
 int main(int argc, char **argv)
 {
    //initialize
-   ros::init(argc, argv, "hokuyo_filter");
+   ros::init(argc, argv, "hokuyo_robot_filter");
    ros::NodeHandle nh;
 
    //subscribe to LaserScan messages pulished by Hokuyo
