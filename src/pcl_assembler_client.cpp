@@ -44,7 +44,7 @@
 #include"dynamixel_msgs/JointState.h"
 #include"std_msgs/Time.h"
 
-/* This is a modified combine_clouds.cpp file that acts both as a timer and subscriber, depending on the value of the
+/* This is a modified periodic_snapshotter.cpp file that acts both as a timer and subscriber, depending on the value of the
 assembled_cloud_mode parameter.  It defaults to subscriber.  The node calls a service from the point_cloud2_assembler node
 from the laser_assembler package to create the compiled point cloud and then publishes the result.
 Timer:
