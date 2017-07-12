@@ -4,7 +4,6 @@ project(spin_hokuyo)
 set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -O3")
 
 find_package(catkin REQUIRED COMPONENTS roscpp message_generation pcl_ros laser_geometry geometry_msgs std_msgs tf sensor_msgs)
-find_package(PCL REQUIRED)
 
 add_service_files(
   FILES
@@ -33,11 +32,8 @@ catkin_package(
   diagnostic_msgs
   dynamixel_msgs
   control_msgs
-  DEPENDS
-     PCL
 )
 include_directories(include ${catkin_INCLUDE_DIRS})
-include_directories(${PCL_INCLUDE_DIRS})
 
 add_executable(tilt_motor src/tilt_motor_single_sweep_continuous.cpp)
 target_link_libraries(tilt_motor ${catkin_LIBRARIES})
@@ -54,9 +50,8 @@ target_link_libraries(pcl_assembler_client ${catkin_LIBRARIES})
 add_executable(tilt_motor_subscribe src/tilt_motor_single_sweep_subscribe.cpp)
 target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})
 
-add_executable(hokuyo_robot_filter src/hokuyo_ground_filter.cpp)
+add_executable(hokuyo_robot_filter src/hokuyo_robot_filter.cpp)
 target_link_libraries(hokuyo_robot_filter ${catkin_LIBRARIES})
-target_link_libraries(hokuyo_robot_filter ${PCL_LIBRARIES})
 
 add_executable(commander tutorials/node/commander.cpp)
 target_link_libraries(commander ${catkin_LIBRARIES})
