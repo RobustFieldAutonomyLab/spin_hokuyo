@@ -2,7 +2,7 @@
 
    <node
      name="dynamixel_manager"
-     pkg="dynamixel_controllers"
+     pkg="spin_hokuyo"
      type="controller_manager.py"
      output="screen">
  
@@ -26,7 +26,7 @@
 
   <node
     name="dynamixel_controller_spawner"
-    pkg="dynamixel_controllers"
+    pkg="spin_hokuyo"
     type="controller_spawner.py"
     args="--manager=dxl_manager
           --port=pan_tilt_port

@@ -20,7 +20,7 @@
    </node>
 
    <rosparam
-      file="$(find motors_base)/launch/dynamixel_servos.yaml"
+      file="$(find spin_hokuyo)/tutorials/launch/dynamixel_servos.yaml"
       command="load"
     />
 
@@ -37,7 +37,7 @@
 
   <node
     name="commander"
-    pkg="motors_base"
+    pkg="spin_hokuyo"
     type="commander"
     output="screen"
    />
