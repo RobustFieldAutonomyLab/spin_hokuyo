@@ -117,8 +117,8 @@ target_link_libraries(combine_clouds ${catkin_LIBRARIES})
 add_executable(tilt_motor_subscribe tilt_motor_single_sweep_subscribe.cpp)
 target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})
 
-add_executable(hokuyo_ground_filter hokuyo_ground_filter.cpp)
-target_link_libraries(hokuyo_ground_filter ${catkin_LIBRARIES})
+add_executable(hokuyo_robot_filter hokuyo_ground_filter.cpp)
+target_link_libraries(hokuyo_robot_filter ${catkin_LIBRARIES})
 
 add_executable(pcl_Conversion pointCloud2_to_pcl.cpp)
 target_link_libraries(pcl_Conversion ${catkin_LIBRARIES})
