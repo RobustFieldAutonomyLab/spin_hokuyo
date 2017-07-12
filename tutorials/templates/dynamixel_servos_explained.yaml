@@ -1,4 +1,5 @@
-# This file allows the spawner to set up the necessary topics and set up the motor speed, max angle, etc.  This setup is for one motor, but this file can be expanded to support multiple motors.
+# This file allows the spawner to set up the necessary topics and set up the motor speed, max angle, etc.
+# This setup is for one motor, but this file can be expanded to support multiple motors.
 
 ###################
 #Commented format:#
@@ -13,7 +14,8 @@
 #   joint_speed: 0.5 (servo speed, higher number = faster)
 #   motor:
 #       id: 1 (motor ID number from manager (see launch file) that corresponds to appropriate servo)
-#       init: 2549 ("relative 0" - all programs written to this motor will consider the absolute position 2549 to be position 0 in the code)
+#       init: 2549 ("relative 0" - all programs written to this motor will consider the absolute position 2549 to be
+#                    position 0 in the code)
 #       min: 0  (maximum and minimum angle in "absolute terms", greatest numbe is 28672)
 #       max: 28672
 
