@@ -1,3 +1,5 @@
+## This configuration is only for the tutorial motors launch
+
 tilt_controller:
     controller:
         package: dynamixel_controllers
