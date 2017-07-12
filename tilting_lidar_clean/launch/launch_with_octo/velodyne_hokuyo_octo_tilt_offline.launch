@@ -125,8 +125,6 @@
          <param name="resolution" value="0.3" />
          <param name="frame_id" type="string" value="map" />
          <param name="sensor_model/max_range" value="300.0" />
-         <param name="base_frame_id" type="string" value="velodyne" />
-         <param name="filter_ground" type="bool" value="true" />
          <remap from="cloud_in" to="/assembled_cloud" />
     </node>
 
