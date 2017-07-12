@@ -7,13 +7,18 @@
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
 #include<std_msgs/Float64.h>
+#include <pcl/common/transformation_from_correspondences.h>
 
 using namespace std;
+
+typedef pcl::PointXYZ  PointType;
 
 ros::Publisher pub;
 float max_z;
 int z_obtained = 0;
 float inf = numeric_limits<float>::infinity();
+pcl::PointCloud<PointType> aux;
+pcl::PointCloud<PointType> cloud;
 
 void obtainZ (const std_msgs::Float64 msg)
 {
@@ -28,10 +33,7 @@ void filterGround (const sensor_msgs::PointCloud2ConstPtr& msg)
        ros::spinOnce();
     }
 
-    pcl::PointCloud<pcl::PointXYZ> cloud;
     pcl::fromROSMsg(*msg, cloud);
-
-    pcl::PointCloud<pcl::PointXYZ> aux;
 
     aux.header = cloud.header;
     aux.height = cloud.height;
@@ -64,6 +66,9 @@ void filterGround (const sensor_msgs::PointCloud2ConstPtr& msg)
     pub.publish(filtered);
     ROS_INFO_STREAM("Removed Floor");
     z_obtained = 0;
+
+    aux.clear();
+    cloud.clear();
 }
 
 int main(int argc, char** argv)
