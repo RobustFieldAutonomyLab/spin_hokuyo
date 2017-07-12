@@ -1,3 +1,6 @@
+<!-- This file executes a simple launch of the Dynamixel servo that allows the operator to manually input values for the
+servo to rotate to.  The Hokuyo IS NOT part of this launch. -->
+
 <launch>
 
    <node
