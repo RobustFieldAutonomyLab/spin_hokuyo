@@ -44,7 +44,16 @@
 #include"dynamixel_msgs/JointState.h"
 #include"std_msgs/Time.h"
 
-/* This is a modified combine_clouds.cpp file that subscribes to times published while tilting the motor and sends those as necessary to the compilation service to put all of the point clouds together.  One cloud is published for each complete sweep (i.e. -90 -> +90 -> -90).*/
+/* This is a modified combine_clouds.cpp file that acts both as a timer and subscriber, depending on the value of the
+assembled_cloud_mode parameter.  It defaults to subscriber.  The node calls a service from the point_cloud2_assembler node
+from the laser_assembler package to create the compiled point cloud and then publishes the result.
+Timer:
+As a timer, the node performs its function every 5 seconds.  To use this function, the assembled_cloud_mode parameter must
+be set to time.
+Subscriber:
+As a subscriber, the node subscribes to start and end times published while tilting the motor and sends those as necessary
+to the compilation service to put all of the point clouds together.  One cloud is published for each complete sweep
+(i.e. -90 -> +90 -> -90).  This is the default setting of the node.*/
 
 using namespace laser_assembler;
 
@@ -160,6 +169,7 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
     ROS_INFO("Waiting for [build_cloud] to be advertised");
     
+    //parameter for timer vs. subscriber and length of timer
     n.param<std::string>("assembled_cloud_mode", assembled_cloud_mode, "subscriber");
     n.param<double>("scan_time", scan_time, 5);
 
@@ -167,9 +177,12 @@ int main(int argc, char **argv)
     ros::service::waitForService("build_cloud");
     ROS_INFO_STREAM("Found build_cloud! Starting the Cloud Compiler");
 
-    if (assembled_cloud_mode == "subscriber"){
+    //SUBSCRIBER intialization
+    if (assembled_cloud_mode == "subscriber")
+    {
         //Wait for dynamixel servo to init by waiting for /state topic
         ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(20));   
+        
         //subscribes to start and end time published by tilting motor
         ros::Subscriber sub_1=n.subscribe("/time/start_time", 1, &startTime);
         ros::Subscriber sub_2=n.subscribe("/time/end_time", 1, &endTime);
@@ -177,16 +190,22 @@ int main(int argc, char **argv)
 
     PeriodicSnapshotter snapshotter;
     init = ros::Time::now();
-    if (assembled_cloud_mode == "subscriber"){
-        while(ros::ok()) {
+    
+    //SUBSCRIBER MAIN LOOP
+    if (assembled_cloud_mode == "subscriber")
+    {
+        while(ros::ok())
+        {
             //when an end time comes in (which only occurs after start time is updated) run the compiler
-            if(go==1) {
+            if(go==1)
+            {
                 snapshotter.compile();
                 go = 0;
             }
 
             //wait for messages when not compiling
-            else{
+            else
+            {
                 ros::spinOnce();
             }
   
@@ -195,7 +214,10 @@ int main(int argc, char **argv)
         }
     }
 
-    else if (assembled_cloud_mode == "time"){
+    //TIMER main loop
+    else if (assembled_cloud_mode == "time")
+    {
+        //wait for timer to begin service call
         ros::spin();
     }
 
