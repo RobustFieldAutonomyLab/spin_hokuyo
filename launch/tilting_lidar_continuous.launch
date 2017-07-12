@@ -1,4 +1,4 @@
-<!-- This launch file causes the Hokuyo to sweep back and forth only when an empty message is sent to tilt_motor_subscribe node -->
+<!-- This launch file causes the Hokuyo to sweep back and forth ONLY WHEN AN EMPTY MESSAGE is sent to tilt_motor_subscribe node -->
 
 <launch>
 
