@@ -2,6 +2,7 @@
 #include<sensor_msgs/LaserScan.h>
 
 //This node removes points from the Hokuyo's LaserScan that are the robot
+//The removal of the robot also comes from adjusting the angle viewed by the Hokuyo in the launch file
 
 using namespace std;
 
