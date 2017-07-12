@@ -111,8 +111,8 @@ add_executable(tilt_transform tilt_transform.cpp)
 target_link_libraries(tilt_motor ${catkin_LIBRARIES})
 target_link_libraries(tilt_transform ${catkin_LIBRARIES})
 
-add_executable(combine_clouds combine_clouds_subscriber.cpp)
-target_link_libraries(combine_clouds ${catkin_LIBRARIES})
+add_executable(point_cloud_assembler point_cloud_assembler.cpp)
+target_link_libraries(point_cloud_assembler ${catkin_LIBRARIES})
 
 add_executable(tilt_motor_subscribe tilt_motor_single_sweep_subscribe.cpp)
 target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})
