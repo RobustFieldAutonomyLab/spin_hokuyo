@@ -1,63 +1,80 @@
-# toplevel CMakeLists.txt for a catkin workspace
-# catkin/cmake/toplevel.cmake
-
 cmake_minimum_required(VERSION 2.8.3)
+project(spin_hokuyo)
 
-set(CATKIN_TOPLEVEL TRUE)
+set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -O3")
 
-# search for catkin within the workspace
-set(_cmd "catkin_find_pkg" "catkin" "${CMAKE_SOURCE_DIR}")
-execute_process(COMMAND ${_cmd}
-  RESULT_VARIABLE _res
-  OUTPUT_VARIABLE _out
-  ERROR_VARIABLE _err
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-  ERROR_STRIP_TRAILING_WHITESPACE
+find_package(catkin REQUIRED COMPONENTS roscpp message_generation pcl_ros laser_geometry geometry_msgs std_msgs tf sensor_msgs)
+find_package(PCL REQUIRED)
+
+add_service_files(
+  FILES
+  RestartController.srv
+  SetComplianceMargin.srv
+  SetCompliancePunch.srv
+  SetComplianceSlope.srv
+  SetSpeed.srv
+  SetTorqueLimit.srv
+  StartController.srv
+  StopController.srv
+  TorqueEnable.srv
 )
-if(NOT _res EQUAL 0 AND NOT _res EQUAL 2)
-  # searching fot catkin resulted in an error
-  string(REPLACE ";" " " _cmd_str "${_cmd}")
-  message(FATAL_ERROR "Search for 'catkin' in workspace failed (${_cmd_str}): ${_err}")
-endif()
 
-# include catkin from workspace or via find_package()
-if(_res EQUAL 0)
-  set(catkin_EXTRAS_DIR "${CMAKE_SOURCE_DIR}/${_out}/cmake")
-  # include all.cmake without add_subdirectory to let it operate in same scope
-  include(${catkin_EXTRAS_DIR}/all.cmake NO_POLICY_SCOPE)
-  add_subdirectory("${_out}")
+catkin_python_setup()
 
-else()
-  # use either CMAKE_PREFIX_PATH explicitly passed to CMake as a command line argument
-  # or CMAKE_PREFIX_PATH from the environment
-  if(NOT DEFINED CMAKE_PREFIX_PATH)
-    if(NOT "$ENV{CMAKE_PREFIX_PATH}" STREQUAL "")
-      string(REPLACE ":" ";" CMAKE_PREFIX_PATH $ENV{CMAKE_PREFIX_PATH})
-    endif()
-  endif()
+generate_messages()
 
-  # list of catkin workspaces
-  set(catkin_search_path "")
-  foreach(path ${CMAKE_PREFIX_PATH})
-    if(EXISTS "${path}/.catkin")
-      list(FIND catkin_search_path ${path} _index)
-      if(_index EQUAL -1)
-        list(APPEND catkin_search_path ${path})
-      endif()
-    endif()
-  endforeach()
+catkin_package(
+  CATKIN_DEPENDS
+  rospy
+  actionlib
+  dynamixel_driver
+  std_msgs
+  trajectory_msgs
+  diagnostic_msgs
+  dynamixel_msgs
+  control_msgs
+  DEPENDS
+     PCL
+)
+include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(${PCL_INCLUDE_DIRS})
 
-  # search for catkin in all workspaces
-  set(CATKIN_TOPLEVEL_FIND_PACKAGE TRUE)
-  find_package(catkin QUIET
-    NO_POLICY_SCOPE
-    PATHS ${catkin_search_path}
-    NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-  unset(CATKIN_TOPLEVEL_FIND_PACKAGE)
+add_executable(tilt_motor src/tilt_motor_single_sweep_continuous.cpp)
+target_link_libraries(tilt_motor ${catkin_LIBRARIES})
 
-  if(NOT catkin_FOUND)
-    message(FATAL_ERROR "find_package(catkin) failed. catkin was neither found in the workspace nor in the CMAKE_PREFIX_PATH. One reason may be that no ROS setup.sh was sourced before.")
-  endif()
-endif()
+add_executable(tilt_transform src/tilt_transform.cpp)
+target_link_libraries(tilt_transform ${catkin_LIBRARIES})
 
-catkin_workspace()
+add_executable(scan_to_pcl src/scan_to_pcl.cpp)
+target_link_libraries(scan_to_pcl ${catkin_LIBRARIES})
+
+add_executable(pcl_assembler_client src/pcl_assembler_client.cpp)
+target_link_libraries(pcl_assembler_client ${catkin_LIBRARIES})
+
+add_executable(tilt_motor_subscribe src/tilt_motor_single_sweep_subscribe.cpp)
+target_link_libraries(tilt_motor_subscribe ${catkin_LIBRARIES})
+
+add_executable(hokuyo_robot_filter src/hokuyo_ground_filter.cpp)
+target_link_libraries(hokuyo_robot_filter ${catkin_LIBRARIES})
+target_link_libraries(hokuyo_robot_filter ${PCL_LIBRARIES})
+
+add_executable(floor_max_z src/floor_max_z.cpp)
+target_link_libraries(floor_max_z ${catkin_LIBRARIES})
+target_link_libraries(floor_max_z ${PCL_LIBRARIES})
+
+add_executable(hokuyo_ground_filter src/hokuyo_ground_filter.cpp)
+target_link_libraries(hokuyo_ground_filter ${catkin_LIBRARIES})
+target_link_libraries(hokuyo_ground_filter ${PCL_LIBRARIES})
+
+add_executable(commander tutorials/node/commander.cpp)
+target_link_libraries(commander ${catkin_LIBRARIES})
+
+install(DIRECTORY launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(PROGRAMS
+  controller_manager.py
+  controller_spawner.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

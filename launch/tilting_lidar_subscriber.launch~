@@ -1,0 +1,96 @@
+<!-- This launch file causes the Hokuyo to sweep back and forth only when an empty message is sent to tilt_motor_subscribe node -->
+
+<launch>
+
+  <node
+    name="dynamixel_manager"
+    pkg="dynamixel_controllers"
+    type="controller_manager.py"
+    output="screen">
+ 
+    <rosparam>
+      namespace: dxl_manager
+      serial_ports:
+        pan_tilt_port:
+          port_name: "/dev/ttyUSB0"
+          baud_rate: 1000000
+          min_motor_id: 1
+          max_motor_id: 2
+          update_rate: 60
+    </rosparam>
+  </node>
+
+  <rosparam
+    file="$(find spin_hokuyo)/launch/dynamixel_servos_tilting.yaml"
+    command="load"
+  />
+
+  <node
+    name="dynamixel_controller_spawner"
+    pkg="dynamixel_controllers"
+    type="controller_spawner.py"
+    args="--manager=dxl_manager
+          --port=pan_tilt_port
+          --type=simple
+          tilt_controller"
+    output="screen"
+  />
+
+  <node
+    name="tilt_motor"    
+    pkg="spin_hokuyo"
+    type="tilt_motor_subscribe"
+    output="screen"
+  />
+
+  <node
+    name="tilt_transform"
+    pkg="spin_hokuyo"
+    type="tilt_transform"
+    output="screen"
+  />
+
+  <node
+    pkg="hokuyo_node"
+    type="hokuyo_node"
+    name="hokuyo"
+    output="screen">
+
+    <rosparam>
+      min_ang: -2.0071
+      max_ang: 2.0071
+    </rosparam>
+  </node>
+
+  <node
+    pkg="spin_hokuyo"
+    type="hokuyo_filter"
+    name="hokuyo_filter"
+    output="screen"
+  />
+
+  <node
+    pkg="scan_to_pcl"
+    type="scan_to_pcl"
+    name="scan_to_pcl"
+  />
+
+    <param name="assembled_cloud_mode" type="string" value="subscriber" />
+    <param name="scan_time" type="double" value="5" />
+    <arg name="assemble" default="velodyne_points"/> 
+
+  <node type="point_cloud2_assembler" pkg="laser_assembler"  name="pcl_assembler_server">
+    <remap from="cloud" to="hokuyo_points"/>
+    <param name="max_clouds" type="int" value="400" />
+    <param name="fixed_frame" type="string" value="map" />
+  </node>
+
+
+  <node
+    pkg="spin_hokuyo"
+    type="pcl_assembler_client"
+    name="pcl_assembler_client"
+    output="screen"
+  />
+
+</launch>
