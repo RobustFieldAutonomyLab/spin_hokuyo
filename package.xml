@@ -25,7 +25,6 @@
   <build_depend>tf</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>laser_geometry</build_depend>
-  <build_depend>pcl</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>hokuyo_node</build_depend>
   <build_depend>dynamixel_motor</build_depend>
