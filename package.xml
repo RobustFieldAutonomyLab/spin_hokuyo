@@ -2,21 +2,23 @@
 <package>
   <name>spin_hokuyo</name>
   <version>0.0.0</version>
-  <description>The cleaned up tilter package</description>
+  <description>
+    This package enables a 2D Hokuyo laser, connected to a Dynamixel servo motor, to produce a 3D point cloud that can
+    be visualized in rviz and used to make an octomap.
+  </description>
 
-  <maintainer email="sarah@todo.todo">sarah</maintainer>
+  <maintainer email="sbertuss@stevens.edu">Sarah Bertussi</maintainer>
+  <maintainer email="pszenher@stevens.edu">Paul Szenher</maintainer>
 
-  <license>TODO</license>
+  <license>GPL</license>
 
   <buildtool_depend>catkin</buildtool_depend>
+  
   <build_depend>roscpp</build_depend>
-  <run_depend>roscpp</run_depend>
-  <build_depend>libpcl-all-dev</build_depend>
-  <run_depend>libpcl-all</run_depend>
-
   <build_depend>message_generation</build_depend>
   <build_depend>std_msgs</build_depend>
 
+  <run_depend>roscpp</run_depend>
   <run_depend>rospy</run_depend>
   <run_depend>actionlib</run_depend>
   <run_depend>std_msgs</run_depend>
