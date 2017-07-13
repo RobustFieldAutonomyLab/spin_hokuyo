@@ -21,13 +21,13 @@
   <build_depend>sensor_msgs</build_depend>
   <build_depend>visualization_msgs</build_depend>
   <build_depend>dynamixel_msgs</build_depend>
+  <build_depend>dynamixel_driver</build_depend>
   <build_depend>trajectory_msgs</build_depend>
   <build_depend>tf</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>laser_geometry</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>hokuyo_node</build_depend>
-  <build_depend>dynamixel_motor</build_depend>
   <build_depend>dynamixel_controllers</build_depend>
   <build_depend>laser_assembler</build_depend>
 
