@@ -13,10 +13,13 @@
   <license>GPL</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
   <build_depend>roscpp</build_depend>
+  <build_depend>pcl_ros</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>hokuyo_node</build_depend>
+  <build_depend>dynamixel_motor</build_depend>
+  <build_depend>laser_assembler</build_depend>
 
   <run_depend>roscpp</run_depend>
   <run_depend>rospy</run_depend>
