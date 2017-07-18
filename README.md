@@ -26,6 +26,10 @@ Is the Dynamixel connected to a 12V power source via the adapter?
 Is the switch on the USB adapter at the proper loaction?  
 
 # Acknowledgements
+
+Inspired by the work seen here: </br>
+https://github.com/gcc-robotics/3d_photobooth/blob/master/CapstoneFinalReport_VisionTeam.pdf </br>
+
 ## Dynamixel Interface
 The code used to interact with the Dynamixel comes from bot the ROS Drivers Install and the dynamixel_motor package, which is hosted at:  
 https://github.com/arebgun/dynamixel_motor  
