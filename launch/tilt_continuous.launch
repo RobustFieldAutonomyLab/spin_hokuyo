@@ -51,9 +51,9 @@
   />
 
   <node
+  	name="hokuyo_node"
     pkg="hokuyo_node"
     type="hokuyo_node"
-    name="hokuyo"
     output="screen">
 
     <rosparam>
@@ -63,16 +63,16 @@
   </node>
 
   <node
+    name="hokuyo_robot_filter"
     pkg="spin_hokuyo"
-    type="hokuyo_filter"
-    name="hokuyo_filter"
+    type="hokuyo_robot_filter"
     output="screen"
   />
 
   <node
-    pkg="scan_to_pcl"
-    type="scan_to_pcl"
     name="scan_to_pcl"
+    pkg="spin_hokuyo"
+    type="scan_to_pcl"
   />
 
     <param name="assembled_cloud_mode" type="string" value="subscriber" />
@@ -87,9 +87,9 @@
 
 
   <node
+    name="pcl_assembler_client"
     pkg="spin_hokuyo"
     type="pcl_assembler_client"
-    name="pcl_assembler_client"
     output="screen"
   />
 
