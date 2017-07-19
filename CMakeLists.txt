@@ -5,20 +5,20 @@ set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -O3")
 
 find_package(catkin REQUIRED COMPONENTS roscpp message_generation pcl_ros laser_geometry geometry_msgs std_msgs tf sensor_msgs)
 
-add_service_files(
-  FILES
-  RestartController.srv
-  SetComplianceMargin.srv
-  SetCompliancePunch.srv
-  SetComplianceSlope.srv
-  SetSpeed.srv
-  SetTorqueLimit.srv
-  StartController.srv
-  StopController.srv
-  TorqueEnable.srv
-)
+#add_service_files(
+#  FILES
+#  RestartController.srv
+#  SetComplianceMargin.srv
+#  SetCompliancePunch.srv
+#  SetComplianceSlope.srv
+#  SetSpeed.srv
+#  SetTorqueLimit.srv
+#  StartController.srv
+#  StopController.srv
+#  TorqueEnable.srv
+#)
 
-catkin_python_setup()
+#catkin_python_setup()
 
 generate_messages()
 
@@ -60,8 +60,8 @@ install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-install(PROGRAMS
-  controller_manager.py
-  controller_spawner.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+#install(PROGRAMS
+#  controller_manager.py
+#  controller_spawner.py
+#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
