@@ -5,26 +5,8 @@ set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -O3")
 
 find_package(catkin REQUIRED COMPONENTS roscpp message_generation pcl_ros laser_geometry geometry_msgs std_msgs tf sensor_msgs)
 
-#add_service_files(
-#  FILES
-#  RestartController.srv
-#  SetComplianceMargin.srv
-#  SetCompliancePunch.srv
-#  SetComplianceSlope.srv
-#  SetSpeed.srv
-#  SetTorqueLimit.srv
-#  StartController.srv
-#  StopController.srv
-#  TorqueEnable.srv
-#)
-
-#catkin_python_setup()
-
-generate_messages()
-
 catkin_package(
   CATKIN_DEPENDS
-  rospy
   actionlib
   dynamixel_driver
   std_msgs
@@ -33,6 +15,7 @@ catkin_package(
   dynamixel_msgs
   control_msgs
 )
+
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(tilt_motor src/tilt_motor_single_sweep_continuous.cpp)
@@ -59,9 +42,3 @@ target_link_libraries(commander ${catkin_LIBRARIES})
 install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
-
-#install(PROGRAMS
-#  controller_manager.py
-#  controller_spawner.py
-#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-#)
