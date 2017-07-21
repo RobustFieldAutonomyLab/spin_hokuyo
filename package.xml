@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>spin_hokuyo</name>
-  <version>0.0.0</version>
+  <version>1.0.0</version>
   <description>
     This package enables a 2D Hokuyo laser, connected to a Dynamixel servo motor, to produce a 3D point cloud that can
     be visualized in rviz and used to make an octomap.

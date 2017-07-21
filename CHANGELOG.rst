@@ -2,8 +2,8 @@
 Changelog for package spin_hokuyo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2017-07-21)
+------------------
 * Removed dyanmixel files in favor of using dependencies as the apt version now apparently works
 * Merge branch 'master' of https://github.com/RobustFieldAutonomyLab/spin_hokuyo
 * Fixed packages in launch files, as well as renamed and organized
