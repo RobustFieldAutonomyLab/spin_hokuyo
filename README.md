@@ -49,5 +49,5 @@ https://github.com/ros-perception/laser_assembler
 
 # Authors #
 
-Sarah Bertussi, Paul Szenher.
+Sarah Bertussi, Paul Szenher, Shi Bai.
 [RFAL (Robust Field Autonomy Lab)](http://personal.stevens.edu/~benglot/index.html), Stevens Institute of Technology.
