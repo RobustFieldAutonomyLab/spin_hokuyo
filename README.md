@@ -1,5 +1,6 @@
 # spin_hokuyo
 This repository contains code to control a Dynamixel motor and a 2D Hokuyo LiDAR to create a 3D point cloud that can be visualized in rviz.  This point cloud can then be used to create an octomap (code for this is not included in this repository).<br />
+Created By: Sarah Bertussi and Paul Szenher</br>
 
 # Setup Directions
 1. Install Dynamixel Drivers from ROS:<br/>
