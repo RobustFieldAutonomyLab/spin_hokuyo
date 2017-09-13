@@ -5,7 +5,7 @@ servo to rotate to.  The Hokuyo IS NOT part of this launch. -->
 
    <node
      name="dynamixel_manager"
-     pkg="spin_hokuyo"
+     pkg="dynamixel_controllers"
      type="controller_manager.py"
      output="screen">
  
@@ -29,7 +29,7 @@ servo to rotate to.  The Hokuyo IS NOT part of this launch. -->
 
   <node
     name="dynamixel_controller_spawner"
-    pkg="spin_hokuyo"
+    pkg="dynamixel_controllers"
     type="controller_spawner.py"
     args="--manager=dxl_manager
           --port=pan_tilt_port
