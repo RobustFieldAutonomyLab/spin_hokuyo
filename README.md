@@ -13,7 +13,7 @@ Wiki Page: http://wiki.ros.org/spin_hokuyo
 ```roslaunch spin_hokuyo basic_motors.launch```<br/>
 5. In a new terminal, open the rostopics list.  There should be two new commands: /tilt_controller/command and /tilt_controller/state.  /command will issue new positions to the motor via Float64 (try this using rostopic pub).  /state will list various pieces of information about the motor (rostopic echo).
 6. If this is fully functional, kill the node and do:<br/>
-```roslaunch spin_hokuyo tilting_lidar_continuous.launch```<br/>
+```roslaunch spin_hokuyo tilting_continuous.launch```<br/>
 This should cause the motor to regularly sweep from 90 to -90 and generate a point cloud.
 Be sure to update the dynamixel_servos_tilting.yaml for position, speed, etc.
 
