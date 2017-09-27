@@ -91,6 +91,8 @@ int main (int argc, char **argv)
   //Wait for servo init by waiting for /state message
   ros::topic::waitForMessage<dynamixel_msgs::JointState>("/tilt_controller/state", ros::Duration(100));
   
+  while(ros::ok())
+  {
   //if new request has been received
   if(go==1)
   {
@@ -105,5 +107,6 @@ int main (int argc, char **argv)
   else
   { 
     ros::spinOnce();
+  }
   }
 }
