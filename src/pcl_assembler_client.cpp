@@ -103,11 +103,11 @@ class PeriodicSnapshotter {
 
         // Make the service call
         if (client_.call(srv)) {
-            ROS_INFO_STREAM("Published Cloud") ;
+            //ROS_INFO_STREAM("Published Cloud") ;
             pub_.publish(srv.response.cloud);
         }
         else {
-            ROS_ERROR("Error making service call\n") ;
+            //ROS_ERROR("Error making service call\n") ;
         } 
     }
 
@@ -124,12 +124,12 @@ class PeriodicSnapshotter {
 
         // Make the service call
         if (client_.call(srv)) {
-            ROS_INFO("Published Cloud") ;
+            //ROS_INFO("Published Cloud");
             pub_.publish(srv.response.cloud);
         }
 
         else {
-            ROS_ERROR("Error making service call\n") ;
+            //ROS_ERROR("Error making service call\n") ;
         }
 
             return;
@@ -142,15 +142,15 @@ class PeriodicSnapshotter {
 
         // Make the service call
         if (client_.call(srv)) {
-            ROS_INFO("Published Cloud") ;
+            //ROS_INFO("Published Cloud") ;
             pub_.publish(srv.response.cloud);
         }  
 
         else {
-            ROS_ERROR("Error making service call\n") ;
+            //ROS_ERROR("Error making service call\n") ;
         }
 
-        ROS_ERROR_STREAM(scan_time);
+        //ROS_ERROR_STREAM(scan_time);
     }
 
     private:
@@ -167,7 +167,7 @@ int main(int argc, char **argv)
     //initialize and wait for necessary services, etc.
     ros::init(argc, argv, "Cloud_Compiler");
     ros::NodeHandle n;
-    ROS_INFO("Waiting for [build_cloud] to be advertised");
+    //ROS_INFO("Waiting for [build_cloud] to be advertised");
     
     //parameter for timer vs. subscriber and length of timer
     n.param<std::string>("assembled_cloud_mode", assembled_cloud_mode, "subscriber");
@@ -175,7 +175,7 @@ int main(int argc, char **argv)
 
     //Wait for build cloud service to init
     ros::service::waitForService("build_cloud");
-    ROS_INFO_STREAM("Found build_cloud! Starting the Cloud Compiler");
+    //ROS_INFO_STREAM("Found build_cloud! Starting the Cloud Compiler");
 
     //SUBSCRIBER intialization
     if (assembled_cloud_mode == "subscriber")
